@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────
+
+enum InvitationStatus {
+  DRAFT      // admin ishlayapti, subdomen ochilmaydi
+  PUBLISHED  // subdomen ochiq
+  ARCHIVED   // to'y o'tgan, subdomen "muddati tugagan" sahifani ko'rsatadi
+}
+
+enum Locale {
+  UZ
+  RU
+}
+
+enum Attendance {
+  YES
+  NO
+  MAYBE
+}
+
+// ─── Taklifnoma ───────────────────────────────────────────────────────────
+
+model Invitation {
+  id         String           @id @default(cuid())
+  /// Subdomen: nodir-malika.taklif.site → "nodir-malika"
+  slug       String           @unique
+  /// src/templates/registry.ts dagi id
+  templateId String
+  status     InvitationStatus @default(DRAFT)
+  locale     Locale           @default(UZ)
+
+  groomName String
+  brideName String
+  /// To'y sanasi va boshlanish vaqti (countdown shu vaqtga hisoblanadi)
+  eventAt   DateTime
+
+  /// Bloklar mazmuni — src/lib/content.ts dagi zod sxemasi bo'yicha JSON
+  content Json
+
+  /// Vercel Blob URL'lari
+  coverImage String?
+  gallery    String[] @default([])
+  music      String?
+  /// Telegram preview uchun tayyor OG rasm (bo'lmasa avtomatik yasaladi)
+  ogImage    String?
+
+  // Mijoz va to'lov (faqat admin uchun)
+  clientName  String?
+  clientPhone String?
+  price       Int?
+  paid        Boolean @default(false)
+  note        String?
+
+  /// Shu sanadan keyin ARCHIVED deb hisoblanadi
+  expiresAt DateTime?
+  views     Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rsvps Rsvp[]
+
+  @@index([status])
+}
+
+model Rsvp {
+  id           String     @id @default(cuid())
+  invitationId String
+  invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+
+  name       String
+  attending  Attendance
+  guests     Int        @default(1)
+  note       String?
+  /// ?m= parametridan kelgan shaxsiy murojaat (kim orqali ochilgan)
+  invitedAs  String?
+  createdAt  DateTime   @default(now())
+
+  @@index([invitationId, createdAt])
+}
+
+// ─── Shablon katalogi (admin boshqaradi; kod src/templates/ da) ───────────
+
+model Template {
+  /// src/templates/registry.ts dagi id bilan bir xil
+  id          String  @id
+  name        String
+  /// Katalogdagi qisqa tavsif
+  description String  @default("")
+  /// Ichki sahifadagi to'liq matn
+  body        String  @default("")
+  /// "classic" | "floral" | "dark" | "national" | "minimal"
+  category    String  @default("classic")
+  /// so'mda; null bo'lsa "narx so'rang"
+  price       Int?
+  /// Katalog kartasi rasmi (Blob URL yoki /templates/<id>.jpg)
+  thumbnail   String?
+  /// Ichki sahifa uchun ekran rasmlari
+  screens     String[] @default([])
+  /// Ichki sahifada "Nimalar kiradi" ro'yxati
+  features    String[] @default([])
+  /// Kataloqda ko'rsatish
+  published   Boolean @default(true)
+  /// Yangi / Mashhur kabi belgi
+  badge       String?
+  sortOrder   Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

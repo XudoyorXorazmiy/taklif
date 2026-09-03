@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# taklif.site
 
-## Getting Started
+Onlayn to'y taklifnomalari platformasi. Tuzilma va qoidalar: [CLAUDE.md](CLAUDE.md).
 
-First, run the development server:
+## Lokal ishga tushirish
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env   # DATABASE_URL, ADMIN_PASSWORD, AUTH_SECRET
+npm install
+npm run db:push
+npm run db:seed        # nodirbek-malika namunasi
+npm run dev            # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Subdomen lokalda: `http://nodirbek-malika.localhost:3000`, admin: `http://localhost:3000/admin`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy (Vercel + Railway)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Railway'da Postgres yarating, `DATABASE_URL` ni oling.
+2. Vercel'da loyiha yarating, env'lar: `DATABASE_URL`, `NEXT_PUBLIC_ROOT_DOMAIN=taklif.site`, `ADMIN_PASSWORD`, `AUTH_SECRET` (`openssl rand -hex 32`), `BLOB_READ_WRITE_TOKEN` (Vercel Storage → Blob).
+3. Domains: `taklif.site` va `*.taklif.site` (wildcard) ni loyihaga qo'shing. DNS'da:
+   - `A @ 76.76.21.21` (yoki Vercel ko'rsatgan qiymat)
+   - `CNAME * cname.vercel-dns.com`
+   Wildcard uchun Vercel domen nameserverini yoki DNS'da TXT tasdiqni so'raydi.
+4. Birinchi deploydan keyin `npx prisma db push` ni Railway URL bilan lokal ishga tushiring (yoki Vercel build'da `prisma migrate deploy`).
 
-## Learn More
+## Yangi shablon qo'shish
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. `src/templates/<id>/index.tsx` — `TemplateProps` oladigan default export.
+2. `src/templates/registry.ts` — meta va loader.
+3. `public/templates/<id>.jpg` — katalog rasmi.
+4. `http://localhost:3000/t/<id>` — namuna ma'lumot bilan demo.

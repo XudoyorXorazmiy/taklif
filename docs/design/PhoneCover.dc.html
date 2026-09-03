@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Great+Vibes&family=Alex+Brush&family=Marcellus&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"><style>body{margin:0;background:#E9E5DE}</style></helmet>
+<div style="width:406px;height:860px;background:#141210;border-radius:48px;padding:8px;box-sizing:border-box;box-shadow:0 24px 60px rgba(30,26,22,.28);font-family:Manrope,sans-serif">
+<div style="width:390px;height:844px;border-radius:40px;overflow:hidden;position:relative;background:#FBF8F1;color:#1E1A16">
+<div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#141210;border-radius:0 0 16px 16px;z-index:5"></div>
+
+<sc-if value="{{ isClassic }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;background:#FBF8F1;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<div style="position:absolute;inset:16px;border:1px solid #C9AD5F"></div>
+<div style="position:absolute;left:24px;top:24px;width:26px;height:26px;border-left:1px solid #B8973F;border-top:1px solid #B8973F"></div><div style="position:absolute;right:24px;top:24px;width:26px;height:26px;border-right:1px solid #B8973F;border-top:1px solid #B8973F"></div><div style="position:absolute;left:24px;bottom:24px;width:26px;height:26px;border-left:1px solid #B8973F;border-bottom:1px solid #B8973F"></div><div style="position:absolute;right:24px;bottom:24px;width:26px;height:26px;border-right:1px solid #B8973F;border-bottom:1px solid #B8973F"></div>
+<div style="width:64px;height:64px;border-radius:50%;border:1px solid #C9AD5F;display:flex;align-items:center;justify-content:center;font:500 20px/1 'Cormorant Garamond',serif;color:#B8973F;margin-bottom:26px">N&amp;M</div>
+<div style="font:500 11px/1 Manrope,sans-serif;letter-spacing:.32em;color:#B8973F;text-transform:uppercase">To'y kuni</div>
+<div style="font:400 58px/1.05 'Pinyon Script',cursive;margin-top:22px">Nodirbek</div>
+<div style="font:italic 400 30px/1 'Cormorant Garamond',serif;color:#B8973F;margin:4px 0">&amp;</div>
+<div style="font:400 58px/1.05 'Pinyon Script',cursive">Malika</div>
+<div style="margin-top:26px;width:180px;height:230px;border-radius:90px 90px 0 0;border:1px solid #C9AD5F;padding:6px;box-sizing:border-box"><div style="width:100%;height:100%;border-radius:84px 84px 0 0;background:linear-gradient(160deg,#EFE4CC,#DCCB9E)"></div></div>
+<div style="margin-top:24px;font:500 18px/1 'Cormorant Garamond',serif;letter-spacing:.14em">12 · OKTABR · 2026</div>
+<div style="position:absolute;bottom:40px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:6px;font:500 10px/1 Manrope,sans-serif;letter-spacing:.2em;color:#8A7A5A;text-transform:uppercase"><span>Pastga suring</span><span style="width:1px;height:22px;background:#C9AD5F"></span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFloral }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#fff;color:#3B3A36;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<div style="position:absolute;left:-40px;top:-40px;width:230px;height:280px;border-radius:0 0 140px 0;background:radial-gradient(circle at 40% 40%,rgba(241,217,214,.9),rgba(185,196,168,.5) 60%,transparent 75%)"></div>
+<div style="position:absolute;right:-50px;bottom:-40px;width:250px;height:280px;border-radius:140px 0 0 0;background:radial-gradient(circle at 60% 60%,rgba(241,217,214,.9),rgba(185,196,168,.5) 60%,transparent 75%)"></div>
+<div style="font:500 11px/1 Manrope,sans-serif;letter-spacing:.32em;color:#7A8C6E;text-transform:uppercase;position:relative">To'y kuni</div>
+<div style="font:400 66px/1.05 'Great Vibes',cursive;margin-top:24px;position:relative">Nodirbek</div>
+<div style="font:400 40px/1 'Great Vibes',cursive;color:#C2A36B;position:relative">&amp;</div>
+<div style="font:400 66px/1.05 'Great Vibes',cursive;position:relative">Malika</div>
+<div style="margin-top:30px;width:190px;height:230px;border-radius:95px;background:linear-gradient(160deg,#EEF0E6,#D7DDCB);border:1px solid #C2A36B;position:relative"></div>
+<div style="margin-top:26px;font:500 16px/1 'Cormorant Garamond',serif;letter-spacing:.16em;position:relative">12 · OKTABR · 2026</div>
+<div style="position:absolute;bottom:40px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:6px;font:500 10px/1 Manrope,sans-serif;letter-spacing:.2em;color:#7A8C6E;text-transform:uppercase"><span>Pastga suring</span><span style="width:1px;height:22px;background:#C2A36B"></span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#2B1D16;color:#F1E6D2;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<div style="position:relative;width:300px;height:540px;border-radius:150px;border:1px solid #C9A961;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-sizing:border-box">
+<div style="position:absolute;inset:-12px;border-radius:162px;border:1px dashed rgba(201,169,97,.4)"></div>
+<div style="font:500 11px/1 Manrope,sans-serif;letter-spacing:.32em;color:#C9A961;text-transform:uppercase">To'y kuni</div>
+<div style="font:400 64px/1.1 'Alex Brush',cursive;margin-top:26px">Nodirbek</div>
+<div style="font:400 26px/1 Marcellus,serif;color:#C9A961;margin:4px 0">&amp;</div>
+<div style="font:400 64px/1.1 'Alex Brush',cursive">Malika</div>
+<div style="margin-top:22px;width:130px;height:150px;border-radius:65px 65px 0 0;background:linear-gradient(160deg,#4A3327,#2B1D16);border:1px solid rgba(201,169,97,.5)"></div>
+<div style="margin-top:22px;font:400 15px/1 Marcellus,serif;letter-spacing:.18em">12 · OKTABR · 2026</div>
+</div>
+<div style="position:absolute;bottom:40px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:6px;font:500 10px/1 Manrope,sans-serif;letter-spacing:.2em;color:rgba(241,230,210,.55);text-transform:uppercase"><span>Pastga suring</span><span style="width:1px;height:22px;background:#C9A961"></span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGeneric }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:{{ g.bg }};color:{{ g.text }}">
+<div style="position:absolute;inset:18px;border:1px solid {{ g.line }};border-radius:{{ g.frameRadius }}"></div>
+<div style="font:500 11px/1 Manrope,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:{{ g.accent }}">To'y kuni</div>
+<div style="margin-top:24px;line-height:1.1;font-family:{{ g.family }};font-size:{{ g.size }};font-weight:{{ g.weight }};letter-spacing:{{ g.tracking }}">Nodirbek</div>
+<div style="font:italic 400 30px/1 'Cormorant Garamond',serif;margin:4px 0;color:{{ g.accent }}">&amp;</div>
+<div style="line-height:1.1;font-family:{{ g.family }};font-size:{{ g.size }};font-weight:{{ g.weight }};letter-spacing:{{ g.tracking }}">Malika</div>
+<div style="margin-top:28px;width:170px;height:210px;border:1px solid {{ g.accent }};border-radius:{{ g.photoRadius }};background:{{ g.photo }}"></div>
+<div style="margin-top:24px;font:500 16px/1 'Cormorant Garamond',serif;letter-spacing:.16em">12 · OKTABR · 2026</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGreeting }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#FBF8F1;padding:120px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px"><div style="font:italic 500 22px/1 'Cormorant Garamond',serif;color:#8A7A5A">Hurmatli Ali aka,</div><div style="font:500 30px/1.15 'Cormorant Garamond',serif">Aziz do'stlar va yaqinlar!</div><div style="width:48px;height:1px;background:#B8973F"></div><p style="margin:0;font:400 15px/1.75 Manrope,sans-serif;color:#4A423A">Hayotimizdagi eng baxtli kunda sizni oramizda ko'rishdan mamnun bo'lamiz. Sevgi, kulgu va unutilmas lahzalar bilan to'lgan bu kechani birga nishonlaylik.</p></div>
+</sc-if>
+
+<sc-if value="{{ isDate }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#F5EEDF;padding:72px 28px 40px;display:flex;flex-direction:column;align-items:center;gap:18px">
+<div style="font:400 26px/1 'Pinyon Script',cursive;color:#B8973F">To'y sanasi</div>
+<div style="text-align:center"><div style="font:500 38px/1.05 'Cormorant Garamond',serif">12-oktabr, 2026</div><div style="margin-top:6px;font:500 12px/1 Manrope,sans-serif;letter-spacing:.2em;color:#8A7A5A;text-transform:uppercase">Dushanba · 18:00</div></div>
+<div style="width:100%;background:#FBF8F1;border:1px solid #E2D6B8;padding:16px 12px 12px;box-sizing:border-box">
+<div style="text-align:center;font:600 13px/1 'Cormorant Garamond',serif;letter-spacing:.2em;margin-bottom:10px">OKTABR</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px 0;text-align:center">
+<sc-for list="{{ dayNames }}" as="dn" hint-placeholder-count="7"><div style="font:600 10px/22px Manrope,sans-serif;color:#8A7A5A">{{ dn }}</div></sc-for>
+<sc-for list="{{ cells }}" as="c" hint-placeholder-count="35"><div style="display:flex;justify-content:center;align-items:center;height:34px"><sc-if value="{{ c.wedding }}" hint-placeholder-val="{{ false }}"><div style="width:30px;height:30px;border-radius:50%;background:#B8973F;color:#FBF8F1;display:flex;align-items:center;justify-content:center;font:600 13px/1 Manrope,sans-serif">{{ c.d }}</div></sc-if><sc-if value="{{ c.plain }}" hint-placeholder-val="{{ true }}"><div style="font:400 13px/1 Manrope,sans-serif;color:#4A423A">{{ c.d }}</div></sc-if></div></sc-for>
+</div></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%">
+<div style="background:#FBF8F1;border:1px solid #E2D6B8;padding:12px 4px;text-align:center"><div style="font:500 28px/1 'Cormorant Garamond',serif">39</div><div style="margin-top:6px;font:500 9px/1 Manrope,sans-serif;letter-spacing:.14em;color:#8A7A5A;text-transform:uppercase">kun</div></div>
+<div style="background:#FBF8F1;border:1px solid #E2D6B8;padding:12px 4px;text-align:center"><div style="font:500 28px/1 'Cormorant Garamond',serif">12</div><div style="margin-top:6px;font:500 9px/1 Manrope,sans-serif;letter-spacing:.14em;color:#8A7A5A;text-transform:uppercase">soat</div></div>
+<div style="background:#FBF8F1;border:1px solid #E2D6B8;padding:12px 4px;text-align:center"><div style="font:500 28px/1 'Cormorant Garamond',serif">45</div><div style="margin-top:6px;font:500 9px/1 Manrope,sans-serif;letter-spacing:.14em;color:#8A7A5A;text-transform:uppercase">daqiqa</div></div>
+<div style="background:#FBF8F1;border:1px solid #E2D6B8;padding:12px 4px;text-align:center"><div style="font:500 28px/1 'Cormorant Garamond',serif">08</div><div style="margin-top:6px;font:500 9px/1 Manrope,sans-serif;letter-spacing:.14em;color:#8A7A5A;text-transform:uppercase">soniya</div></div>
+</div></div>
+</sc-if>
+
+<sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#FBF8F1;padding:80px 32px;display:flex;flex-direction:column;align-items:center;gap:28px">
+<div style="text-align:center"><div style="font:400 26px/1 'Pinyon Script',cursive;color:#B8973F">Marosim</div><div style="margin-top:6px;font:500 30px/1.15 'Cormorant Garamond',serif">Kun dasturi</div></div>
+<div style="width:100%;display:flex;flex-direction:column"><sc-for list="{{ schedule }}" as="s" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:72px 24px 1fr;gap:0 12px;min-height:88px"><div style="font:500 22px/1 'Cormorant Garamond',serif;padding-top:2px;text-align:right">{{ s.time }}</div><div style="display:flex;flex-direction:column;align-items:center"><div style="width:9px;height:9px;border-radius:50%;border:1px solid #B8973F;background:#FBF8F1;margin-top:6px"></div><div style="flex:1;width:1px;background:#DCCB9E;margin-top:4px"></div></div><div style="padding-bottom:20px"><div style="font:600 15px/1.3 Manrope,sans-serif">{{ s.title }}</div><div style="margin-top:4px;font:400 13px/1.5 Manrope,sans-serif;color:#8A7A5A">{{ s.note }}</div></div></div></sc-for></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVenue }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#F5EEDF;padding:72px 28px;display:flex;flex-direction:column;align-items:center;gap:20px">
+<div style="text-align:center"><div style="font:400 26px/1 'Pinyon Script',cursive;color:#B8973F">Joy</div><div style="margin-top:6px;font:500 30px/1.15 'Cormorant Garamond',serif">Manzil</div></div>
+<div style="width:100%;background:#FBF8F1;border:1px solid #E2D6B8;padding:22px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px"><div style="width:100%;height:170px;background:linear-gradient(180deg,#F3EAD5,#E6D9B8)"></div><div style="font:500 11px/1 Manrope,sans-serif;letter-spacing:.24em;color:#B8973F;text-transform:uppercase;margin-top:6px">Nikoh to'yi · 18:00</div><div style="font:500 24px/1.2 'Cormorant Garamond',serif">"Navro'z" to'yxonasi</div><div style="font:400 14px/1.5 Manrope,sans-serif;color:#4A423A">Toshkent, Yunusobod tumani,<br>Amir Temur ko'chasi 108</div><div style="margin-top:8px;display:flex;align-items:center;justify-content:center;height:44px;padding:0 24px;background:#B8973F;color:#FBF8F1;font:600 13px/1 Manrope,sans-serif;letter-spacing:.06em">Xaritada ochish</div></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDetails }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#FBF8F1;padding:100px 32px;display:flex;flex-direction:column;align-items:center;gap:24px"><div style="font:500 30px/1.15 'Cormorant Garamond',serif">Muhim ma'lumot</div><div style="width:100%;display:flex;flex-direction:column"><sc-for list="{{ details }}" as="d" hint-placeholder-count="3"><div style="padding:18px 0;border-top:1px solid #E2D6B8;display:grid;grid-template-columns:96px 1fr;gap:12px"><div style="font:500 19px/1.2 'Cormorant Garamond',serif;color:#B8973F">{{ d.title }}</div><div style="font:400 14px/1.6 Manrope,sans-serif;color:#4A423A">{{ d.text }}</div></div></sc-for><div style="border-top:1px solid #E2D6B8"></div></div></div>
+</sc-if>
+
+<sc-if value="{{ isDresscode }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#F5EEDF;padding:0 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px"><div style="font:500 30px/1.15 'Cormorant Garamond',serif">Kiyim tarzi</div><p style="margin:0;font:400 14px/1.6 Manrope,sans-serif;color:#4A423A">Tantanali kechki libos. Ranglar palitrasiga rioya qilsangiz xursand bo'lamiz.</p><div style="display:flex;gap:14px;margin-top:6px"><div style="width:40px;height:40px;border-radius:50%;background:#1E1A16"></div><div style="width:40px;height:40px;border-radius:50%;background:#5C3A2E"></div><div style="width:40px;height:40px;border-radius:50%;background:#B8973F"></div><div style="width:40px;height:40px;border-radius:50%;background:#7E8C6E"></div><div style="width:40px;height:40px;border-radius:50%;background:#EFE7D6;box-shadow:inset 0 0 0 1px #C9AD5F"></div></div></div>
+</sc-if>
+
+<sc-if value="{{ isGallery }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#FBF8F1;padding:80px 32px;display:flex;flex-direction:column;align-items:center;gap:24px"><div style="text-align:center"><div style="font:400 26px/1 'Pinyon Script',cursive;color:#B8973F">Lahzalar</div><div style="margin-top:6px;font:500 30px/1.15 'Cormorant Garamond',serif">Galereya</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%"><div style="height:200px;background:linear-gradient(160deg,#EFE4CC,#DCCB9E)"></div><div style="height:200px;background:linear-gradient(200deg,#F3EAD5,#D9C79A);margin-top:24px"></div><div style="height:200px;background:linear-gradient(160deg,#E9DDC2,#CDB98A)"></div><div style="height:200px;background:linear-gradient(200deg,#EFE4CC,#DCCB9E);margin-top:24px"></div></div></div>
+</sc-if>
+
+<sc-if value="{{ isRsvp }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#F5EEDF;padding:64px 24px 32px;display:flex;flex-direction:column;align-items:center;gap:20px">
+<div style="text-align:center"><div style="font:500 28px/1.15 'Cormorant Garamond',serif">Qatnashishingizni tasdiqlang</div><div style="margin-top:8px;font:500 11px/1 Manrope,sans-serif;letter-spacing:.14em;color:#8A7A5A;text-transform:uppercase">1-oktabrgacha javob bering</div></div>
+<div style="width:100%;background:#FBF8F1;border:1px solid #E2D6B8;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 10px/1 Manrope,sans-serif;letter-spacing:.12em;color:#8A7A5A;text-transform:uppercase">Ismingiz</span><div style="height:44px;border:1px solid #DCCB9E;background:#fff;padding:0 14px;display:flex;align-items:center;font:400 14px Manrope,sans-serif">Ali Karimov</div></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:44px;background:#B8973F;color:#FBF8F1;display:flex;align-items:center;gap:10px;padding:0 14px;font:600 13px Manrope,sans-serif"><span style="width:14px;height:14px;border-radius:50%;border:1px solid #FBF8F1;display:flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:#FBF8F1"></span></span>Albatta kelaman</div><div style="height:44px;border:1px solid #DCCB9E;background:#fff;display:flex;align-items:center;gap:10px;padding:0 14px;font:500 13px Manrope,sans-serif"><span style="width:14px;height:14px;border-radius:50%;border:1px solid #B8973F"></span>Kela olmayman</div><div style="height:44px;border:1px solid #DCCB9E;background:#fff;display:flex;align-items:center;gap:10px;padding:0 14px;font:500 13px Manrope,sans-serif"><span style="width:14px;height:14px;border-radius:50%;border:1px solid #B8973F"></span>Keyinroq aytaman</div></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 10px/1 Manrope,sans-serif;letter-spacing:.12em;color:#8A7A5A;text-transform:uppercase">Necha kishi kelasiz?</span><div style="display:flex;height:44px;border:1px solid #DCCB9E;background:#fff"><div style="width:44px;display:flex;align-items:center;justify-content:center;font:400 20px 'Cormorant Garamond',serif;color:#B8973F;border-right:1px solid #DCCB9E">−</div><div style="flex:1;display:flex;align-items:center;justify-content:center;font:500 15px Manrope,sans-serif">2</div><div style="width:44px;display:flex;align-items:center;justify-content:center;font:400 20px 'Cormorant Garamond',serif;color:#B8973F;border-left:1px solid #DCCB9E">+</div></div></div>
+<div style="height:46px;background:#1E1A16;color:#FBF8F1;display:flex;align-items:center;justify-content:center;font:600 13px Manrope,sans-serif;letter-spacing:.08em">Yuborish</div>
+</div></div>
+</sc-if>
+
+<sc-if value="{{ isContacts }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#FBF8F1;padding:0 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px"><div style="font:500 30px/1.15 'Cormorant Garamond',serif">Kontaktlar</div><div style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px"><div style="border:1px solid #E2D6B8;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center"><div style="font:500 11px/1 Manrope,sans-serif;letter-spacing:.2em;color:#B8973F;text-transform:uppercase">Kuyov tomon</div><div style="font:500 14px/1.3 Manrope,sans-serif">+998 90 123 45 67</div><div style="width:100%;height:44px;display:flex;align-items:center;justify-content:center;background:#B8973F;color:#FBF8F1;font:600 12px Manrope,sans-serif">Qo'ng'iroq</div><div style="width:100%;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #B8973F;color:#B8973F;font:600 12px Manrope,sans-serif;box-sizing:border-box">Telegram</div></div><div style="border:1px solid #E2D6B8;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center"><div style="font:500 11px/1 Manrope,sans-serif;letter-spacing:.2em;color:#B8973F;text-transform:uppercase">Kelin tomon</div><div style="font:500 14px/1.3 Manrope,sans-serif">+998 91 234 56 78</div><div style="width:100%;height:44px;display:flex;align-items:center;justify-content:center;background:#B8973F;color:#FBF8F1;font:600 12px Manrope,sans-serif">Qo'ng'iroq</div><div style="width:100%;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #B8973F;color:#B8973F;font:600 12px Manrope,sans-serif;box-sizing:border-box">Telegram</div></div></div></div>
+</sc-if>
+
+<sc-if value="{{ isClosing }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#F5EEDF;padding:0 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px"><div style="position:absolute;inset:16px;border:1px solid #C9AD5F"></div><div style="font:400 44px/1.2 'Pinyon Script',cursive;color:#B8973F">Sizni intiqlik bilan kutamiz!</div><div style="width:48px;height:1px;background:#B8973F"></div><div style="font:italic 500 20px/1.3 'Cormorant Garamond',serif">Hurmat bilan,<br>Nodirbek va Malika</div></div>
+</sc-if>
+
+<div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:130px;height:4px;border-radius:2px;background:rgba(0,0,0,.28);z-index:5"></div>
+</div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:406,&quot;height&quot;:860},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;classic&quot;,&quot;options&quot;:[&quot;classic&quot;,&quot;floral&quot;,&quot;dark&quot;,&quot;milliy&quot;,&quot;minimal&quot;,&quot;garden&quot;,&quot;arch&quot;,&quot;pink&quot;,&quot;emerald&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;cover&quot;,&quot;options&quot;:[&quot;cover&quot;,&quot;greeting&quot;,&quot;date&quot;,&quot;schedule&quot;,&quot;venue&quot;,&quot;details&quot;,&quot;dresscode&quot;,&quot;gallery&quot;,&quot;rsvp&quot;,&quot;contacts&quot;,&quot;closing&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const v = this.props.variant ?? 'classic', s = this.props.screen ?? 'cover';
+    const G = {
+      milliy: { bg: '#FBF6EA', text: '#1E1A16', accent: '#1F6F6A', line: '#1F6F6A', frameRadius: '0', family: "'Cormorant Garamond',serif", size: '50px', weight: 500, tracking: '.02em', photoRadius: '85px 85px 0 0', photo: 'linear-gradient(160deg,#E6EFE9,#BFD6CD)' },
+      minimal: { bg: '#FFFFFF', text: '#1E1A16', accent: '#1E1A16', line: '#E5E1DA', frameRadius: '0', family: 'Manrope,sans-serif', size: '40px', weight: 500, tracking: '-.02em', photoRadius: '0', photo: 'linear-gradient(160deg,#EEECE7,#D8D4CC)' },
+      garden: { bg: '#17301F', text: '#F1E6D2', accent: '#C9A961', line: 'rgba(201,169,97,.5)', frameRadius: '160px 160px 0 0', family: "'Great Vibes',cursive", size: '62px', weight: 400, tracking: '0', photoRadius: '85px', photo: 'linear-gradient(160deg,#2E4A36,#17301F)' },
+      arch: { bg: '#F3E9D8', text: '#1E1A16', accent: '#B8973F', line: '#B8973F', frameRadius: '170px 170px 0 0', family: "'Cormorant Garamond',serif", size: '52px', weight: 500, tracking: '.04em', photoRadius: '85px 85px 0 0', photo: 'linear-gradient(160deg,#E9DBBE,#D2BD8E)' },
+      pink: { bg: '#FBEFEF', text: '#3B3A36', accent: '#C97B8B', line: '#E8C9CF', frameRadius: '24px', family: "'Alex Brush',cursive", size: '64px', weight: 400, tracking: '0', photoRadius: '85px', photo: 'linear-gradient(160deg,#F6DCE0,#E8B9C2)' },
+      emerald: { bg: '#0F3B2E', text: '#F1E6D2', accent: '#D4B36A', line: 'rgba(212,179,106,.5)', frameRadius: '0', family: "'Pinyon Script',cursive", size: '56px', weight: 400, tracking: '0', photoRadius: '0', photo: 'linear-gradient(160deg,#1E5646,#0F3B2E)' },
+    };
+    const cells = [{ d: '', plain: true }, { d: '', plain: true }, { d: '', plain: true }];
+    for (let d = 1; d <= 31; d++) cells.push({ d, wedding: d === 12, plain: d !== 12 });
+    cells.push({ d: '', plain: true });
+    const cover = s === 'cover';
+    return {
+      isClassic: cover && v === 'classic', isFloral: cover && v === 'floral', isDark: cover && v === 'dark',
+      isGeneric: cover && !!G[v], g: G[v] || G.minimal,
+      isGreeting: s === 'greeting', isDate: s === 'date', isSchedule: s === 'schedule', isVenue: s === 'venue', isDetails: s === 'details', isDresscode: s === 'dresscode', isGallery: s === 'gallery', isRsvp: s === 'rsvp', isContacts: s === 'contacts', isClosing: s === 'closing',
+      cells, dayNames: ['Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh', 'Ya'],
+      schedule: [
+        { time: '17:00', title: 'Mehmonlarni kutib olish', note: 'Yengil taomlar va musiqa' },
+        { time: '18:00', title: 'Nikoh marosimi', note: 'Asosiy zal' },
+        { time: '19:00', title: 'Ziyofat', note: 'Dasturxon va tabriklar' },
+        { time: '20:30', title: 'Tort kesish', note: '' },
+        { time: '21:00', title: 'Raqs va musiqa', note: 'Kechning yakuni' },
+      ],
+      details: [
+        { title: "Sovg'alar", text: "Eng katta sovg'a — sizning kelishingiz. Gul o'rniga konvert afzal." },
+        { title: 'Bolalar', text: "Kichkintoylar uchun alohida stol va animator bo'ladi." },
+        { title: 'Transport', text: "To'yxona oldida bepul avtoturargoh mavjud." },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

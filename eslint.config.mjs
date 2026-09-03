@@ -15,4 +15,11 @@ const eslintConfig = defineConfig([
   ]),
 ]);
 
+eslintConfig.push({
+  rules: {
+    // O'zbek matnida apostrof ko'p ishlatiladi
+    "react/no-unescaped-entities": "off",
+  },
+});
+
 export default eslintConfig;

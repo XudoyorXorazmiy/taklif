@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafaf7;
+  --foreground: #1c1917;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
+
+/* ── Taklifnoma animatsiyalari ─────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+.intro-gate {
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.intro-opening {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+.page-in {
+  animation: page-in 1s ease both;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Konvert: yuqori qopqoq ochilishi */
+.envelope-flap {
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.intro-opening .envelope-flap {
+  transform: rotateX(180deg);
+}
+.wax-seal {
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.intro-opening .wax-seal {
+  transform: scale(0.6);
+  opacity: 0;
+}
+
+/* Yumshoq pulsatsiya ("bosing" ishorasi uchun) */
+@keyframes soft-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+.soft-pulse {
+  animation: soft-pulse 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .page-in, .soft-pulse { animation: none; }
+  .intro-gate, .envelope-flap, .wax-seal { transition: none; }
+}
+
+/* ── Shablon shriftlari (src/templates/fonts.ts) ────────────────────── */
+@theme inline {
+  --font-cg: var(--font-cormorant), Georgia, serif;
+  --font-ps: var(--font-pinyon), cursive;
+  --font-gv: var(--font-vibes), cursive;
+  --font-ab: var(--font-alex), cursive;
+  --font-mc: var(--font-marcellus), Georgia, serif;
+  --font-mr: var(--font-manrope), system-ui, sans-serif;
+}
+
+/* Asset joyi (faqat preview) */
+.slot-ph {
+  border: 1px dashed currentColor;
+  opacity: 0.85;
+}
+
+/* Musiqa tugmasi */
+.music-paused > span { opacity: 0.55; }
+.music-playing > span { animation: soft-pulse 1.4s ease-in-out infinite; }
+
+/* Intro variantlari */
+.intro-card { transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease; }
+.intro-opening .intro-card { transform: translateY(-70px); opacity: 0; }
+.intro-decor { transition: transform 0.9s ease, opacity 0.9s ease; }
+.intro-opening .intro-decor-l { transform: translate(-60px, -40px); opacity: 0; }
+.intro-opening .intro-decor-r { transform: translate(60px, 40px); opacity: 0; }
+.intro-oval { transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s ease; }
+.intro-opening .intro-oval { transform: scale(3.2); opacity: 0; }
+
+/* Gorizontal karusel (floral galereya) */
+.snap-x-carousel { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.snap-x-carousel::-webkit-scrollbar { display: none; }
+.snap-x-carousel > * { scroll-snap-align: start; }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-card, .intro-decor, .intro-oval { transition: none; }
+  .music-playing > span { animation: none; }
+}
+
+/* ── Sayt ───────────────────────────────────────────────────────────── */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+.ticker-track {
+  animation: ticker 40s linear infinite;
+  width: max-content;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+html { scroll-behavior: smooth; }
