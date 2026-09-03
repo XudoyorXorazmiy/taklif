@@ -117,7 +117,7 @@ export default function FloralWatercolor({ data, guest, preview, slots }: Templa
               <div className="text-center">
                 <div className="font-cg text-[40px] font-medium leading-[1.05]">{formatDate(data.eventAt, locale)}</div>
                 <div className="mt-1.5 text-[13px] font-medium uppercase tracking-[.2em] text-[#7A8C6E]">
-                  {formatWeekday(data.eventAt, locale)} · {formatTime(data.eventAt)}
+                  {formatWeekday(data.eventAt, locale)}{c.hero.showTime ? ` · ${formatTime(data.eventAt)}` : ""}
                 </div>
               </div>
               <Calendar
@@ -288,17 +288,9 @@ export default function FloralWatercolor({ data, guest, preview, slots }: Templa
               <Slot preview={slots} label="Akvarel gul, chap past, 180×200" className="absolute -bottom-[30px] -left-[30px] h-[200px] w-[180px] rounded-tr-[100px] text-[9px] text-[#7A8C6E]" style={ph} />
               <Slot preview={slots} label="Akvarel gul, o'ng yuqori, 180×200" className="absolute -right-[30px] -top-[30px] h-[200px] w-[180px] rounded-bl-[100px] text-[9px] text-[#7A8C6E]" style={ph} />
               <div className="relative font-gv text-[50px] leading-[1.2] [text-wrap:balance]">{c.closing.text}</div>
-              <div className="relative font-cg text-xl font-medium italic leading-[1.3] text-[#5C5A54]">
-                {c.closing.signature.trim() ? (
-                  <span className="whitespace-pre-line">{c.closing.signature.trim()}</span>
-                ) : (
-                  <>
-                    {L.withLove}
-                    <br />
-                    {[data.groomName, data.brideName].filter(Boolean).join(` ${L.and} `)}
-                  </>
-                )}
-              </div>
+              {c.closing.signature.trim() && (
+                <div className="relative font-cg text-xl font-medium italic leading-[1.3] text-[#5C5A54] whitespace-pre-line">{c.closing.signature.trim()}</div>
+              )}
               <div className="relative mt-6 text-[10px] uppercase tracking-[.2em] text-[#7A8C6E]">{ROOT_DOMAIN}</div>
             </Reveal>
           )}

@@ -13,13 +13,14 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const inv = await getPublishedBySlug(slug);
   const meta = getTemplateMeta(inv?.templateId ?? "") ?? templates[0];
   const locale = inv?.locale ?? "UZ";
-  const title = inv ? parseContent(inv.content).hero.title.trim() : "";
+  const hero = inv ? parseContent(inv.content).hero : null;
+  const title = hero?.title.trim() ?? "";
   return renderOg({
     meta,
     locale,
     groom: title || (inv?.groomName ?? "Taklifnoma"),
     bride: title ? "" : (inv?.brideName ?? ""),
-    dateLine: inv ? `${formatDateDots(inv.eventAt, locale)} · ${formatTime(inv.eventAt)}` : "",
+    dateLine: inv ? `${formatDateDots(inv.eventAt, locale)}${hero?.showTime ? ` · ${formatTime(inv.eventAt)}` : ""}` : "",
     footer: `${slug}.${ROOT_DOMAIN}`,
   });
 }

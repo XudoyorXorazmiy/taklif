@@ -171,9 +171,32 @@ export function InvitationForm({ id, initial }: Props) {
               </div>
               {id && <span className="mt-1 block text-[11px] text-neutral-500">O'zgartirsangiz eski havola ishlamay qoladi.</span>}
             </Field>
-            <Field label="To'y sanasi va vaqti (Toshkent)">
-              <input type="datetime-local" className={inp} value={v.eventAt} onChange={(e) => set("eventAt", e.target.value)} required />
-            </Field>
+            <div className="grid grid-cols-[1fr_120px] gap-2">
+              <Field label="To'y sanasi">
+                <input
+                  type="date"
+                  className={inp}
+                  value={v.eventAt.slice(0, 10)}
+                  onChange={(e) => set("eventAt", `${e.target.value}T${v.eventAt.slice(11, 16) || "00:00"}`)}
+                  required
+                />
+              </Field>
+              <Field label="Vaqt (ixtiyoriy)">
+                <input
+                  type="time"
+                  className={inp}
+                  value={c.hero.showTime ? v.eventAt.slice(11, 16) : ""}
+                  onChange={(e) => {
+                    const tm = e.target.value;
+                    setV((s) => ({
+                      ...s,
+                      eventAt: `${s.eventAt.slice(0, 10)}T${tm || "00:00"}`,
+                      content: { ...s.content, hero: { ...s.content.hero, showTime: !!tm } },
+                    }));
+                  }}
+                />
+              </Field>
+            </div>
             <Field label="Shablon">
               <select className={inp} value={v.templateId} onChange={(e) => set("templateId", e.target.value)}>
                 {templates.map((t) => (
@@ -437,7 +460,7 @@ export function InvitationForm({ id, initial }: Props) {
             <Field label="Matn">
               <input className={inp} value={c.closing.text} onChange={(e) => setC("closing", { ...c.closing, text: e.target.value })} />
             </Field>
-            <Field label="Imzo — «Hurmat bilan, Kuyov va Kelin» o'rniga (ixtiyoriy, bir necha qator bo'lishi mumkin)">
+            <Field label="Imzo (ixtiyoriy, bir necha qator). Bo'sh bo'lsa imzo qatori umuman chiqmaydi">
               <textarea rows={2} className={inp} value={c.closing.signature} onChange={(e) => setC("closing", { ...c.closing, signature: e.target.value })} placeholder={"Ehtirom ila,\nOta-onalar"} />
             </Field>
           </div>

@@ -64,6 +64,8 @@ export const contentSchema = z.object({
       title: z.string().default(""),
       /** Konvert muhri / monogram harflari ("N&M"). Bo'sh bo'lsa ismlarning bosh harfi */
       initials: z.string().default(""),
+      /** Soat kiritilmagan bo'lsa false — sana blokida va preview'da vaqt chiqmaydi */
+      showTime: z.boolean().default(true),
     })
     .prefault({}),
 

@@ -144,7 +144,7 @@ export default function ClassicGold({ data, guest, preview, slots }: TemplatePro
               <div className="text-center">
                 <div className="font-cg text-[40px] font-medium leading-[1.05]">{formatDate(data.eventAt, locale)}</div>
                 <div className="mt-1.5 text-[13px] font-medium uppercase tracking-[.2em] text-[#8A7A5A]">
-                  {formatWeekday(data.eventAt, locale)} · {formatTime(data.eventAt)}
+                  {formatWeekday(data.eventAt, locale)}{c.hero.showTime ? ` · ${formatTime(data.eventAt)}` : ""}
                 </div>
               </div>
               <Calendar
@@ -334,17 +334,9 @@ export default function ClassicGold({ data, guest, preview, slots }: TemplatePro
               <div className="pointer-events-none absolute inset-4 border border-[#C9AD5F]" />
               <div className="font-ps text-[44px] leading-[1.2] text-[#B8973F] [text-wrap:balance]">{c.closing.text}</div>
               <div className="h-px w-12 bg-[#B8973F]" />
-              <div className="font-cg text-xl font-medium italic leading-[1.3]">
-                {c.closing.signature.trim() ? (
-                  <span className="whitespace-pre-line">{c.closing.signature.trim()}</span>
-                ) : (
-                  <>
-                    {L.withLove}
-                    <br />
-                    {[data.groomName, data.brideName].filter(Boolean).join(` ${L.and} `)}
-                  </>
-                )}
-              </div>
+              {c.closing.signature.trim() && (
+                <div className="font-cg text-xl font-medium italic leading-[1.3] whitespace-pre-line">{c.closing.signature.trim()}</div>
+              )}
               <div className="mt-6 text-[10px] uppercase tracking-[.2em] text-[#8A7A5A]">{ROOT_DOMAIN}</div>
             </Reveal>
           )}

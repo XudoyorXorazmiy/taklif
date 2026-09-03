@@ -127,7 +127,7 @@ export default function DarkElegant({ data, guest, preview, slots }: TemplatePro
               <div className="text-center">
                 <div className="font-mc text-[34px] leading-[1.1]">{formatDate(data.eventAt, locale)}</div>
                 <div className="mt-2 text-[13px] font-medium uppercase tracking-[.2em] text-[#7A6548]">
-                  {formatWeekday(data.eventAt, locale)} · {formatTime(data.eventAt)}
+                  {formatWeekday(data.eventAt, locale)}{c.hero.showTime ? ` · ${formatTime(data.eventAt)}` : ""}
                 </div>
               </div>
               <Calendar
@@ -294,17 +294,9 @@ export default function DarkElegant({ data, guest, preview, slots }: TemplatePro
             <Card id="closing" className="flex flex-col items-center gap-[18px] rounded-b-[120px] px-7 pb-20 pt-14 text-center">
               <div className="font-ab text-[48px] leading-[1.2] text-[#9C7F3E] [text-wrap:balance]">{c.closing.text}</div>
               <div className="h-px w-12 bg-[#C9A961]" />
-              <div className="font-mc text-[17px] leading-[1.4]">
-                {c.closing.signature.trim() ? (
-                  <span className="whitespace-pre-line">{c.closing.signature.trim()}</span>
-                ) : (
-                  <>
-                    {L.withLove}
-                    <br />
-                    {[data.groomName, data.brideName].filter(Boolean).join(` ${L.and} `)}
-                  </>
-                )}
-              </div>
+              {c.closing.signature.trim() && (
+                <div className="font-mc text-[17px] leading-[1.4] whitespace-pre-line">{c.closing.signature.trim()}</div>
+              )}
               <div className="mt-5 text-[10px] uppercase tracking-[.2em] text-[#7A6548]">{ROOT_DOMAIN}</div>
             </Card>
           )}
