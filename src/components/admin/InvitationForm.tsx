@@ -152,6 +152,9 @@ export function InvitationForm({ id, initial }: Props) {
                 }}
               />
             </Field>
+            <Field label="Konvert muhri va monogram harflari (masalan: N&M yoki ♥). Bo'sh bo'lsa ismlarning bosh harfi">
+              <input className={inp} value={c.hero.initials} placeholder="N&M" onChange={(e) => setC("hero", { ...c.hero, initials: e.target.value })} />
+            </Field>
             <Field label="Subdomen">
               <div className="flex items-center gap-1">
                 <input
@@ -198,9 +201,6 @@ export function InvitationForm({ id, initial }: Props) {
             </Field>
             <Field label="Shior (masalan: Ikki qalb · Bir taqdir)">
               <input className={inp} value={c.hero.tagline} onChange={(e) => setC("hero", { ...c.hero, tagline: e.target.value })} />
-            </Field>
-            <Field label="Konvert / monogram harflari (masalan: N&M). Bo'sh bo'lsa ismlardan olinadi">
-              <input className={inp} value={c.hero.initials} onChange={(e) => setC("hero", { ...c.hero, initials: e.target.value })} />
             </Field>
             <div>
               <span className={lbl}>Asosiy rasm</span>
