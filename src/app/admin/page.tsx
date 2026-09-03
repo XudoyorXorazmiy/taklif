@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { formatDate } from "@/lib/i18n";
-import { invitationUrl } from "@/lib/site";
+import { displayName, invitationUrl } from "@/lib/site";
 import { getTemplateMeta } from "@/templates/registry";
 
 const statusLabel = { DRAFT: "Qoralama", PUBLISHED: "Nashrda", ARCHIVED: "Arxiv" } as const;
@@ -50,7 +50,7 @@ export default async function AdminHome() {
                 <tr key={i.id} className="border-t hover:bg-neutral-50">
                   <td className="px-4 py-3">
                     <Link href={`/admin/${i.id}`} className="font-medium hover:underline">
-                      {i.groomName} & {i.brideName}
+                      {displayName(i)}
                     </Link>
                     {i.clientName && <div className="text-xs text-neutral-500">{i.clientName}</div>}
                   </td>

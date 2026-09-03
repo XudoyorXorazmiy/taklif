@@ -76,7 +76,7 @@ export default function DarkElegant({ data, guest, preview, slots }: TemplatePro
   const b = c.blocks;
   const T = c.labels;
   const lb = (v: string, d: string) => (v.trim() === "-" ? null : v.trim() || d);
-  const initials = c.hero.initials.trim() || `${data.groomName[0] ?? ""} & ${data.brideName[0] ?? ""}`;
+  const initials = c.hero.initials.trim() || (data.groomName || data.brideName ? `${data.groomName[0] ?? ""} & ${data.brideName[0] ?? ""}` : "♥");
   const venues = c.venues.filter((v) => v.name || v.address);
 
   return (
@@ -301,7 +301,7 @@ export default function DarkElegant({ data, guest, preview, slots }: TemplatePro
                   <>
                     {L.withLove}
                     <br />
-                    {data.groomName} {L.and} {data.brideName}
+                    {[data.groomName, data.brideName].filter(Boolean).join(` ${L.and} `)}
                   </>
                 )}
               </div>

@@ -132,10 +132,25 @@ export function InvitationForm({ id, initial }: Props) {
           <h2 className={h2}>Asosiy</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label="Kuyov ismi">
-              <input className={inp} value={v.groomName} onChange={(e) => onNames(e.target.value, v.brideName)} required />
+              <input className={inp} value={v.groomName} onChange={(e) => onNames(e.target.value, v.brideName)} />
             </Field>
             <Field label="Kelin ismi">
-              <input className={inp} value={v.brideName} onChange={(e) => onNames(v.groomName, e.target.value)} required />
+              <input className={inp} value={v.brideName} onChange={(e) => onNames(v.groomName, e.target.value)} />
+            </Field>
+            <Field label="Ismlar o'rniga matn (masalan: Ehtirom ila). To'ldirilsa muqovada ismlar chiqmaydi">
+              <input
+                className={inp}
+                value={c.hero.title}
+                placeholder="Ehtirom ila"
+                onChange={(e) => {
+                  const title = e.target.value;
+                  setV((s) => ({
+                    ...s,
+                    content: { ...s.content, hero: { ...s.content.hero, title } },
+                    slug: slugTouched || s.groomName || s.brideName ? s.slug : slugify(title),
+                  }));
+                }}
+              />
             </Field>
             <Field label="Subdomen">
               <div className="flex items-center gap-1">
@@ -183,9 +198,6 @@ export function InvitationForm({ id, initial }: Props) {
             </Field>
             <Field label="Shior (masalan: Ikki qalb · Bir taqdir)">
               <input className={inp} value={c.hero.tagline} onChange={(e) => setC("hero", { ...c.hero, tagline: e.target.value })} />
-            </Field>
-            <Field label="Muqova matni — ismlar o'rniga (masalan: Ehtirom ila). Bo'sh bo'lsa ismlar chiqadi">
-              <input className={inp} value={c.hero.title} onChange={(e) => setC("hero", { ...c.hero, title: e.target.value })} />
             </Field>
             <Field label="Konvert / monogram harflari (masalan: N&M). Bo'sh bo'lsa ismlardan olinadi">
               <input className={inp} value={c.hero.initials} onChange={(e) => setC("hero", { ...c.hero, initials: e.target.value })} />

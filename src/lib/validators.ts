@@ -12,8 +12,8 @@ export const invitationInput = z.object({
     .refine((s) => !RESERVED_SLUGS.has(s), "Bu nom band"),
   templateId: z.string().refine((id) => !!getTemplateMeta(id), "Shablon topilmadi"),
   locale: z.enum(["UZ", "RU"]),
-  groomName: z.string().trim().min(1, "Kuyov ismi kerak").max(60),
-  brideName: z.string().trim().min(1, "Kelin ismi kerak").max(60),
+  groomName: z.string().trim().max(60).default(""),
+  brideName: z.string().trim().max(60).default(""),
   /** "2026-10-12T18:00" — Toshkent vaqti */
   eventAt: z.string().min(1, "Sana kerak"),
   coverImage: z.string().nullable().default(null),

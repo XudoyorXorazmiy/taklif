@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { displayName } from "@/lib/site";
 
 const att = { YES: "Keladi", NO: "Kelmaydi", MAYBE: "Noaniq" } as const;
 
@@ -20,7 +21,7 @@ export default async function Rsvps({ params }: PageProps<"/admin/[id]/rsvps">) 
   return (
     <>
       <Link href={`/admin/${id}`} className="text-sm text-neutral-500 hover:underline">
-        ← {inv.groomName} & {inv.brideName}
+        ← {displayName(inv)}
       </Link>
       <h1 className="mt-2 text-2xl font-semibold">Mehmonlar javobi</h1>
       <div className="mt-4 flex gap-6 text-sm">

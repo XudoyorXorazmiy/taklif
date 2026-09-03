@@ -32,3 +32,10 @@ export function slugify(...parts: string[]): string {
     .replace(/^-+|-+$/g, "")
     .slice(0, 40);
 }
+
+/** Admin ro'yxati va sarlavhalar uchun: ismlar yoki muqova matni */
+export function displayName(inv: { groomName: string; brideName: string; content?: unknown }): string {
+  const title = ((inv.content as { hero?: { title?: string } } | null)?.hero?.title ?? "").trim();
+  const names = [inv.groomName, inv.brideName].filter(Boolean).join(" & ");
+  return names || title || "Taklifnoma";
+}

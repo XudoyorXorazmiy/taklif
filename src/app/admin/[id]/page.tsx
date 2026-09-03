@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { parseContent } from "@/lib/content";
-import { invitationUrl } from "@/lib/site";
+import { displayName, invitationUrl } from "@/lib/site";
 import { InvitationForm } from "@/components/admin/InvitationForm";
 import { StatusBar } from "@/components/admin/StatusBar";
 import { GuestLinks } from "@/components/admin/GuestLinks";
@@ -26,9 +26,7 @@ export default async function EditInvitation({ params }: PageProps<"/admin/[id]"
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">
-            {inv.groomName} & {inv.brideName}
-          </h1>
+          <h1 className="text-2xl font-semibold">{displayName(inv)}</h1>
           <p className="mt-1 text-sm text-neutral-500">
             <a href={invitationUrl(inv.slug)} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
               {invitationUrl(inv.slug)}
