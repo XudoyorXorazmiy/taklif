@@ -107,3 +107,44 @@ export async function setTemplatePublished(id: string, published: boolean) {
   revalidatePath("/");
   revalidatePath("/admin/templates");
 }
+
+/** Taklifnoma nusxasi: DRAFT holatda, yangi subdomen (slug-2, slug-3 …), RSVP va ko'rishlarsiz */
+export async function duplicateInvitation(id: string) {
+  await requireAdmin();
+  const src = await prisma.invitation.findUnique({ where: { id } });
+  if (!src) return;
+  const base = src.slug.replace(/-\d+$/, "").slice(0, 36);
+  let slug = "";
+  for (let n = 2; n < 100; n++) {
+    const candidate = `${base}-${n}`;
+    if (!(await prisma.invitation.findUnique({ where: { slug: candidate }, select: { id: true } }))) {
+      slug = candidate;
+      break;
+    }
+  }
+  if (!slug) return;
+  const copy = await prisma.invitation.create({
+    data: {
+      slug,
+      templateId: src.templateId,
+      status: "DRAFT",
+      locale: src.locale,
+      groomName: src.groomName,
+      brideName: src.brideName,
+      eventAt: src.eventAt,
+      content: src.content as object,
+      coverImage: src.coverImage,
+      gallery: src.gallery,
+      music: src.music,
+      ogImage: src.ogImage,
+      clientName: src.clientName,
+      clientPhone: src.clientPhone,
+      price: src.price,
+      paid: false,
+      note: src.note,
+      expiresAt: src.expiresAt,
+    },
+  });
+  revalidatePath("/admin");
+  redirect(`/admin/${copy.id}`);
+}

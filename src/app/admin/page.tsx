@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { formatDate } from "@/lib/i18n";
 import { displayName, invitationUrl } from "@/lib/site";
 import { getTemplateMeta } from "@/templates/registry";
+import { DuplicateButton } from "@/components/admin/DuplicateButton";
 
 const statusLabel = { DRAFT: "Qoralama", PUBLISHED: "Nashrda", ARCHIVED: "Arxiv" } as const;
 const statusClass = {
@@ -43,6 +44,7 @@ export default async function AdminHome() {
                 <th className="px-4 py-3 text-right">Ko'rish</th>
                 <th className="px-4 py-3 text-right">RSVP</th>
                 <th className="px-4 py-3">To'lov</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
             <tbody>
@@ -71,6 +73,9 @@ export default async function AdminHome() {
                     </Link>
                   </td>
                   <td className="px-4 py-3">{i.paid ? "✅" : i.price ? `${i.price.toLocaleString("ru-RU")} so'm` : "—"}</td>
+                  <td className="px-4 py-3 text-right">
+                    <DuplicateButton id={i.id} />
+                  </td>
                 </tr>
               ))}
             </tbody>
