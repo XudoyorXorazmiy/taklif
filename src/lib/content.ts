@@ -110,11 +110,31 @@ export const contentSchema = z.object({
       deadline: z.string().default(""),
       askGuests: z.boolean().default(true),
       askNote: z.boolean().default(true),
+      /** Telefon raqamini so'rash (premium shablonlarda) */
+      askPhone: z.boolean().default(false),
       thanks: z.string().default(""),
     })
     .prefault({}),
 
   contacts: z.array(contactSchema).default([]),
+
+  /** Blok fon rasmlari (Blob URL). Faqat fonli shablonlar ishlatadi. */
+  backgrounds: z
+    .object({
+      cover: z.string().default(""),
+      greeting: z.string().default(""),
+      date: z.string().default(""),
+      countdown: z.string().default(""),
+      schedule: z.string().default(""),
+      venue: z.string().default(""),
+      details: z.string().default(""),
+      dressCode: z.string().default(""),
+      gallery: z.string().default(""),
+      rsvp: z.string().default(""),
+      contacts: z.string().default(""),
+      closing: z.string().default(""),
+    })
+    .prefault({}),
 
   closing: z
     .object({

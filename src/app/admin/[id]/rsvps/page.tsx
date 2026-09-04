@@ -34,6 +34,7 @@ export default async function Rsvps({ params }: PageProps<"/admin/[id]/rsvps">) 
           <thead className="bg-neutral-50 text-left text-xs uppercase tracking-wide text-neutral-500">
             <tr>
               <th className="px-4 py-3">Ism</th>
+              <th className="px-4 py-3">Telefon</th>
               <th className="px-4 py-3">Javob</th>
               <th className="px-4 py-3 text-right">Kishi</th>
               <th className="px-4 py-3">Izoh</th>
@@ -45,6 +46,7 @@ export default async function Rsvps({ params }: PageProps<"/admin/[id]/rsvps">) 
             {inv.rsvps.map((r) => (
               <tr key={r.id} className="border-t">
                 <td className="px-4 py-3 font-medium">{r.name}</td>
+                <td className="px-4 py-3">{r.phone ? <a href={`tel:${r.phone.replace(/\s/g, "")}`} className="text-blue-600 hover:underline">{r.phone}</a> : ""}</td>
                 <td className="px-4 py-3">{att[r.attending]}</td>
                 <td className="px-4 py-3 text-right">{r.attending === "NO" ? "—" : r.guests}</td>
                 <td className="px-4 py-3 text-neutral-600">{r.note ?? ""}</td>
@@ -54,7 +56,7 @@ export default async function Rsvps({ params }: PageProps<"/admin/[id]/rsvps">) 
             ))}
             {inv.rsvps.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-neutral-500">Hali javob yo'q</td>
+                <td colSpan={7} className="px-4 py-8 text-center text-neutral-500">Hali javob yo'q</td>
               </tr>
             )}
           </tbody>

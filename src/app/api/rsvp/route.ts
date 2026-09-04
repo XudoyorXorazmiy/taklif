@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 const schema = z.object({
   invitationId: z.string().min(1),
   name: z.string().trim().min(1).max(100),
+  phone: z.string().trim().max(30).optional().nullable(),
   attending: z.enum(["YES", "NO", "MAYBE"]),
   guests: z.number().int().min(1).max(20).default(1),
   note: z.string().trim().max(500).optional().nullable(),
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
   });
   if (!inv || inv.status !== "PUBLISHED") return NextResponse.json({ error: "Topilmadi" }, { status: 404 });
 
-  const { note, invitedAs, ...rest } = parsed.data;
-  await prisma.rsvp.create({ data: { ...rest, note: note || null, invitedAs: invitedAs || null } });
+  const { note, invitedAs, phone, ...rest } = parsed.data;
+  await prisma.rsvp.create({ data: { ...rest, phone: phone || null, note: note || null, invitedAs: invitedAs || null } });
   return NextResponse.json({ ok: true });
 }

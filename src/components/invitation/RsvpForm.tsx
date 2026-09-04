@@ -29,6 +29,7 @@ interface Props {
   guest?: string;
   askGuests: boolean;
   askNote: boolean;
+  askPhone?: boolean;
   /** Admin kiritgan rahmat matni; bo'sh bo'lsa standart */
   thanks?: string;
   eventDate: Date;
@@ -40,10 +41,11 @@ interface Props {
 
 type Att = "YES" | "NO" | "MAYBE";
 
-export function RsvpForm({ invitationId, guest, askGuests, askNote, thanks, eventDate, locale, labels, preview, ui }: Props) {
+export function RsvpForm({ invitationId, guest, askGuests, askNote, askPhone, thanks, eventDate, locale, labels, preview, ui }: Props) {
   const [name, setName] = useState(guest ?? "");
   const [attending, setAttending] = useState<Att>("YES");
   const [guests, setGuests] = useState(2);
+  const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
 
@@ -55,7 +57,7 @@ export function RsvpForm({ invitationId, guest, askGuests, askNote, thanks, even
       const res = await fetch("/api/rsvp", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ invitationId, name, attending, guests: attending === "NO" ? 1 : guests, note, invitedAs: guest ?? null }),
+        body: JSON.stringify({ invitationId, name, phone, attending, guests: attending === "NO" ? 1 : guests, note, invitedAs: guest ?? null }),
       });
       setState(res.ok ? "done" : "error");
     } catch {
@@ -111,6 +113,20 @@ export function RsvpForm({ invitationId, guest, askGuests, askNote, thanks, even
               +
             </button>
           </div>
+        </label>
+      )}
+
+      {askPhone && (
+        <label className="flex flex-col gap-1.5">
+          <span className={ui.label}>{labels.rsvpPhone}</span>
+          <input
+            type="tel"
+            required
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder={labels.rsvpPhonePlaceholder}
+            className={ui.input}
+          />
         </label>
       )}
 

@@ -31,7 +31,8 @@ export async function renderOg({ meta, locale, groom, bride, dateLine, footer }:
   const scriptFamily = script ? "Script" : "serif";
   const serifFamily = serif ? "Serif" : "serif";
   const sansFamily = sans ? "Sans" : "sans-serif";
-  const big = o.script === "pinyon" ? 104 : 120;
+  const big = o.script === "pinyon" ? 104 : o.script === "cormorantItalic" ? 96 : 120;
+  const scriptStyle = o.script === "cormorantItalic" ? ("italic" as const) : ("normal" as const);
   const ovalSvg =
     o.frame === "oval"
       ? `url("data:image/svg+xml;utf8,${encodeURIComponent(
@@ -50,9 +51,9 @@ export async function renderOg({ meta, locale, groom, bride, dateLine, footer }:
         )}
         <div style={{ fontSize: 16, letterSpacing: 6.4, textTransform: "uppercase", color: o.accent, fontWeight: 500 }}>{L.introEyebrow}</div>
         <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
-          <span style={{ fontFamily: scriptFamily, fontSize: bride ? big : Math.round(big * 0.8), lineHeight: 1.1, textAlign: "center", maxWidth: 1000 }}>{groom}</span>
+          <span style={{ fontFamily: scriptFamily, fontStyle: scriptStyle, fontSize: bride ? big : Math.round(big * 0.8), lineHeight: 1.1, textAlign: "center", maxWidth: 1000 }}>{groom}</span>
           {bride && <span style={{ fontFamily: o.script === "vibes" ? scriptFamily : serifFamily, fontSize: o.script === "vibes" ? 72 : 60, color: o.accent, lineHeight: 1 }}>&amp;</span>}
-          {bride && <span style={{ fontFamily: scriptFamily, fontSize: big, lineHeight: 1 }}>{bride}</span>}
+          {bride && <span style={{ fontFamily: scriptFamily, fontStyle: scriptStyle, fontSize: big, lineHeight: 1 }}>{bride}</span>}
         </div>
         {o.frame === "square" && <div style={{ width: 80, height: 1, background: o.accent }} />}
         <div style={{ fontFamily: serifFamily, fontSize: o.serif === "marcellus" ? 26 : 28, letterSpacing: 5.6 }}>{dateLine}</div>

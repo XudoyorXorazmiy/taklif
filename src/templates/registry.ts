@@ -35,12 +35,22 @@ export const templates: TemplateMeta[] = [
     frameColor: "#1F150F",
     og: { bg: "#2B1D16", text: "#F1E6D2", accent: "#C9A961", muted: "rgba(241,230,210,.55)", script: "alex", serif: "marcellus", frame: "oval" },
   },
+  {
+    id: "garden-premium",
+    name: "Bog' saroyi",
+    category: "luxury",
+    description: "Akvarel bog' va marmar arkalar, har blokda o'z foni. Premium daraja.",
+    thumbnail: "/templates/garden-premium.jpg",
+    frameColor: "#E4DFD5",
+    og: { bg: "#EFEAE4", text: "#2C4130", accent: "#C0A268", muted: "#5A5F48", script: "cormorantItalic", serif: "cormorant", frame: "none" },
+  },
 ];
 
 const loaders: Record<string, () => Promise<{ default: ComponentType<TemplateProps> }>> = {
   "classic-gold": () => import("./classic-gold"),
   "floral-watercolor": () => import("./floral-watercolor"),
   "dark-elegant": () => import("./dark-elegant"),
+  "garden-premium": () => import("./garden-premium"),
 };
 
 export function getTemplateMeta(id: string): TemplateMeta | undefined {

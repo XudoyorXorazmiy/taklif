@@ -46,7 +46,7 @@ export interface TemplateMeta {
     text: string;
     accent: string;
     muted: string;
-    script: "pinyon" | "vibes" | "alex";
+    script: "pinyon" | "vibes" | "alex" | "cormorantItalic";
     serif: "cormorant" | "marcellus";
     frame: "square" | "oval" | "none";
   };

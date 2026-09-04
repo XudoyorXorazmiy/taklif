@@ -430,6 +430,10 @@ export function InvitationForm({ id, initial }: Props) {
               <input type="checkbox" checked={c.rsvp.askNote} onChange={(e) => setC("rsvp", { ...c.rsvp, askNote: e.target.checked })} />
               Izoh maydonini ko'rsatish
             </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={c.rsvp.askPhone} onChange={(e) => setC("rsvp", { ...c.rsvp, askPhone: e.target.checked })} />
+              Telefon raqamini so'rash
+            </label>
           </div>
         </section>
 
@@ -463,6 +467,52 @@ export function InvitationForm({ id, initial }: Props) {
             <Field label="Imzo (ixtiyoriy, bir necha qator). Bo'sh bo'lsa imzo qatori umuman chiqmaydi">
               <textarea rows={2} className={inp} value={c.closing.signature} onChange={(e) => setC("closing", { ...c.closing, signature: e.target.value })} placeholder={"Ehtirom ila,\nOta-onalar"} />
             </Field>
+          </div>
+        </section>
+
+        {/* Blok fon rasmlari */}
+        <section className={card}>
+          <h2 className={h2}>Blok fon rasmlari</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            Faqat fonli shablonlarda (masalan «Bog' saroyi») ishlaydi. Har blok uchun 390×—— vertikal rasm. Bo'sh bo'lsa yumshoq gradient chiqadi.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {(
+              [
+                ["cover", "Muqova"],
+                ["greeting", "Salomlashuv"],
+                ["date", "Sana"],
+                ["countdown", "Sanoq"],
+                ["venue", "Manzil"],
+                ["schedule", "Dastur"],
+                ["details", "Muhim ma'lumot"],
+                ["dressCode", "Kiyim tarzi"],
+                ["gallery", "Galereya"],
+                ["rsvp", "RSVP"],
+                ["contacts", "Kontaktlar"],
+                ["closing", "Yakun"],
+              ] as [keyof InvitationContent["backgrounds"], string][]
+            ).map(([k, label]) => (
+              <div key={k} className="flex items-center gap-3 rounded-xl border bg-neutral-50 p-3">
+                {c.backgrounds[k] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={c.backgrounds[k]} alt="" className="h-16 w-11 flex-none rounded object-cover" />
+                ) : (
+                  <div className="h-16 w-11 flex-none rounded bg-neutral-200" />
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm font-medium">{label}</div>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                    <Upload folder={`${v.slug || "bg"}/bg`} accept="image/*" label={c.backgrounds[k] ? "Almashtirish" : "Yuklash"} onDone={(u) => setC("backgrounds", { ...c.backgrounds, [k]: u })} />
+                    {c.backgrounds[k] && (
+                      <button type="button" className="text-xs text-red-600" onClick={() => setC("backgrounds", { ...c.backgrounds, [k]: "" })}>
+                        o'chirish
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 

@@ -80,7 +80,7 @@ export function sampleInvitation(locale: "UZ" | "RU" = "UZ"): InvitationData {
         text: uz ? "Tantanali kechki libos. Ranglar palitrasiga rioya qilsangiz xursand bo'lamiz." : "Торжественный вечерний стиль. Будем рады, если поддержите нашу палитру.",
         colors: ["#1E1A16", "#5C3A2E", "#B8973F", "#7E8C6E", "#EFE7D6"],
       },
-      rsvp: { deadline: uz ? "1-oktabrgacha javob bering" : "Ответьте до 1 октября", askGuests: true, askNote: true, thanks: "" },
+      rsvp: { deadline: uz ? "Iltimos, 1-oktabrgacha javob bering" : "Просим заполнить форму подтверждения до 1 октября", askGuests: true, askNote: true, askPhone: true, thanks: "" },
       contacts: [
         { name: uz ? "Kuyov tomon" : "Со стороны жениха", phone: "+998 90 123 45 67", telegram: "nodirbek" },
         { name: uz ? "Kelin tomon" : "Со стороны невесты", phone: "+998 91 234 56 78", telegram: "malika" },
