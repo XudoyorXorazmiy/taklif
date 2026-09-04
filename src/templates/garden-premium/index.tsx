@@ -8,6 +8,7 @@ import { Slot } from "@/components/invitation/Slot";
 import { formatDate, formatDateDots, formatTime, formatWeekday, t } from "@/lib/i18n";
 import { ROOT_DOMAIN } from "@/lib/site";
 import { fontVars } from "../fonts";
+import { Arch, Cypresses, FloralCorner, TopGarland, Wash } from "./Decor";
 import type { TemplateProps } from "../types";
 
 /**
@@ -50,22 +51,50 @@ const rsvpUi: RsvpUi = {
   sentText: "font-mr text-[15px] leading-[1.6] text-[#5A5F48]",
 };
 
-/** Fon rasmi + yumshoq oq parda (matn o'qilishi uchun) */
-function Bg({ src, preview, label, veil = 0.55 }: { src?: string; preview?: boolean; label: string; veil?: number }) {
+/** Blok fonlari: rasm bo'lsa rasm, bo'lmasa o'z akvarel dekoratsiyamiz */
+type DecorKind = "arch" | "garland" | "corners" | "cypress" | "plain";
+
+function Decor({ kind, seed }: { kind: DecorKind; seed: number }) {
+  return (
+    <>
+      <div className="absolute inset-0" style={{ background: softBg }} />
+      <Wash seed={seed} />
+      {kind === "arch" && (
+        <>
+          <Arch />
+          <TopGarland />
+        </>
+      )}
+      {kind === "garland" && <TopGarland />}
+      {kind === "corners" && (
+        <>
+          <FloralCorner position="tl" className="left-0 top-0" />
+          <FloralCorner position="br" className="bottom-0 right-0" />
+        </>
+      )}
+      {kind === "cypress" && (
+        <>
+          <Cypresses />
+          <FloralCorner position="tl" className="left-0 top-0 !h-[30%] !w-[44%] opacity-80" />
+        </>
+      )}
+    </>
+  );
+}
+
+function Bg({ src, decor, seed, veil = 0.55 }: { src?: string; decor: DecorKind; seed: number; veil?: number }) {
   return (
     <>
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={src} alt="" className="absolute inset-0 h-full w-full object-cover" />
       ) : (
-        <div className="absolute inset-0" style={{ background: softBg }} />
+        <Decor kind={decor} seed={seed} />
       )}
-      <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, rgba(247,243,237,${veil + 0.1}) 0%, rgba(247,243,237,${veil - 0.15}) 40%, rgba(247,243,237,${veil + 0.1}) 100%)` }} />
-      {!src && preview && (
-        <div className="absolute inset-x-6 top-6 z-[1]">
-          <Slot preview label={label} className="h-16 w-full rounded-xl text-[#5A5F48]" style={{ borderColor: C.gold, background: "rgba(192,162,104,.06)" }} />
-        </div>
-      )}
+      <div
+        className="absolute inset-0"
+        style={{ background: `linear-gradient(180deg, rgba(247,243,237,${veil + 0.1}) 0%, rgba(247,243,237,${veil - 0.15}) 40%, rgba(247,243,237,${veil + 0.1}) 100%)` }}
+      />
     </>
   );
 }
@@ -74,10 +103,10 @@ function Script({ children, className = "" }: { children: React.ReactNode; class
   return <div className={`font-cg text-[38px] font-medium italic leading-[1.15] text-[#2C4130] ${className}`}>{children}</div>;
 }
 
-function Section({ id, bg, preview, label, veil, className = "", children }: { id: string; bg?: string; preview?: boolean; label: string; veil?: number; className?: string; children: React.ReactNode }) {
+function Section({ id, bg, decor = "plain", seed = 0, veil, className = "", children }: { id: string; bg?: string; decor?: DecorKind; seed?: number; veil?: number; className?: string; children: React.ReactNode }) {
   return (
     <Reveal as="section" id={id} className={`relative isolate overflow-hidden ${className}`}>
-      <Bg src={bg} preview={preview} label={label} veil={veil} />
+      <Bg src={bg} decor={decor} seed={seed} veil={veil} />
       <div className="relative z-[2]">{children}</div>
     </Reveal>
   );
@@ -86,13 +115,16 @@ function Section({ id, bg, preview, label, veil, className = "", children }: { i
 function Cover({ initials, hint, eyebrow }: { initials: string; hint: string; eyebrow: string }) {
   return (
     <div className={`${fontVars} relative flex h-full w-full flex-col items-center justify-center gap-9 overflow-hidden font-mr`} style={{ background: softBg }}>
-      <div className="pointer-events-none absolute inset-5 rounded-[200px_200px_24px_24px] border border-[#C0A268]/50" />
-      <div className="text-[11px] font-medium uppercase tracking-[.34em] text-[#5A5F48]">{eyebrow}</div>
-      <div className="intro-oval relative grid h-[186px] w-[186px] place-items-center rounded-full border border-[#C0A268]">
+      <Wash seed={9} />
+      <TopGarland />
+      <FloralCorner position="br" className="bottom-0 right-0 !h-[34%] !w-[52%]" />
+      <div className="pointer-events-none absolute inset-5 z-[1] rounded-[200px_200px_24px_24px] border border-[#C0A268]/50" />
+      <div className="relative z-[2] text-[11px] font-medium uppercase tracking-[.34em] text-[#5A5F48]">{eyebrow}</div>
+      <div className="intro-oval relative z-[2] grid h-[186px] w-[186px] place-items-center rounded-full border border-[#C0A268] bg-[#F7F3EC]/70 backdrop-blur-[2px]">
         <div className="absolute inset-2 rounded-full border border-[#C0A268]/40" />
         <div className="font-cg text-[46px] font-medium italic text-[#2C4130]">{initials}</div>
       </div>
-      <div className="flex flex-col items-center gap-3">
+      <div className="relative z-[2] flex flex-col items-center gap-3">
         <div className="text-[13px] font-medium tracking-[.1em] text-[#5A5F48]">{hint}</div>
         <div className="h-8 w-px bg-[#C0A268]" />
       </div>
@@ -123,7 +155,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
         <div className={`${fontVars} relative min-h-dvh bg-[#EFEAE4] font-mr text-[#2C4130]`}>
           {/* 01 cover */}
           <section id="cover" className="relative isolate flex h-[844px] flex-col items-center justify-end overflow-hidden px-8 pb-24 text-center">
-            <Bg src={bgs.cover} preview={slots} label="Muqova foni — akvarel bog' / arka, 390×844" veil={0.28} />
+            <Bg src={bgs.cover} decor="arch" seed={1} veil={0.24} />
             <div className="relative z-[2] flex flex-col items-center">
               {c.hero.eyebrow && <div className="mb-5 text-[11px] font-medium uppercase tracking-[.34em] text-[#5A5F48]">{c.hero.eyebrow}</div>}
               {c.hero.title ? (
@@ -141,7 +173,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 02 greeting */}
           {b.greeting && (
-            <Section id="greeting" bg={bgs.greeting} preview={slots} label="Salomlashuv foni — gul gulchambar, 390×700" className="flex flex-col items-center gap-4 px-8 py-16 text-center">
+            <Section id="greeting" bg={bgs.greeting} decor="garland" seed={2} className="flex flex-col items-center gap-4 px-8 py-16 text-center">
               {guest && <div className="font-cg text-[24px] font-medium italic text-[#5A5F48]">{L.dear} {guest},</div>}
               <Script className="text-[40px]">{formatDate(data.eventAt, locale)}</Script>
               <div className="mt-1 h-px w-14 bg-[#C0A268]" />
@@ -152,7 +184,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 03 date — kalendar */}
           {b.date && (
-            <Section id="date" bg={bgs.date} preview={slots} label="Sana bloki foni, 390×620" className="flex flex-col items-center gap-6 px-8 py-16">
+            <Section id="date" bg={bgs.date} decor="corners" seed={3} className="flex flex-col items-center gap-6 px-8 py-16">
               {lb(T.dateTitle, L.dateTitle) && <Script>{lb(T.dateTitle, L.dateTitle)}</Script>}
               <div className="text-center">
                 <div className="font-cg text-[34px] font-medium leading-[1.1]">{formatDate(data.eventAt, locale)}</div>
@@ -177,7 +209,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 04 countdown — oltin doira */}
           {b.countdown && (
-            <Section id="countdown" bg={bgs.countdown} preview={slots} label="Sanoq foni — sarv daraxtlar / manzara, 390×620" className="flex flex-col items-center px-6 py-16">
+            <Section id="countdown" bg={bgs.countdown} decor="cypress" seed={4} veil={0.5} className="flex flex-col items-center px-6 py-16">
               <div className="relative grid aspect-square w-full max-w-[330px] place-items-center">
                 <div className="absolute inset-0 rounded-full border border-[#C0A268]" />
                 <div className="absolute inset-[10px] rounded-full border border-[#C0A268]/35" />
@@ -200,7 +232,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 05 venue */}
           {b.venues && venues.length > 0 && (
-            <Section id="venue" bg={bgs.venue} preview={slots} label="Manzil foni — ustunlar / arka, 390×760" className="flex flex-col items-center gap-7 px-8 py-16 text-center">
+            <Section id="venue" bg={bgs.venue} decor="arch" seed={5} veil={0.62} className="flex flex-col items-center gap-7 px-8 py-16 text-center">
               {lb(T.venueTitle, L.venueTitle) && <Script>{lb(T.venueTitle, L.venueTitle)}</Script>}
               {venues.map((v, i) => (
                 <div key={i} className="flex w-full flex-col items-center gap-2.5">
@@ -226,7 +258,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 06 schedule */}
           {b.schedule && c.schedule.length > 0 && (
-            <Section id="schedule" bg={bgs.schedule} preview={slots} label="Dastur foni — arka / lyustra, 390×820" className="flex flex-col items-center gap-6 px-8 py-16">
+            <Section id="schedule" bg={bgs.schedule} decor="garland" seed={6} veil={0.6} className="flex flex-col items-center gap-6 px-8 py-16">
               <div className="text-center">
                 {lb(T.scheduleTitle, L.scheduleTitle) && <Script>{lb(T.scheduleTitle, L.scheduleTitle)}</Script>}
                 <div className="mt-2 text-[15px] text-[#5A5F48]">{formatDate(data.eventAt, locale)}</div>
@@ -248,7 +280,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 07 details */}
           {b.details && c.details.length > 0 && (
-            <Section id="details" bg={bgs.details} preview={slots} label="Ma'lumot bloki foni, 390×620" className="flex flex-col items-center gap-6 px-8 py-16 text-center">
+            <Section id="details" bg={bgs.details} decor="corners" seed={7} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
               {lb(T.detailsTitle, L.detailsTitle) && <Script>{lb(T.detailsTitle, L.detailsTitle)}</Script>}
               {c.details.map((d, i) => (
                 <div key={i} className="w-full max-w-[320px]">
@@ -261,7 +293,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 08 dresscode */}
           {b.dressCode && (c.dressCode.text || c.dressCode.colors.length > 0) && (
-            <Section id="dresscode" bg={bgs.dressCode} preview={slots} label="Kiyim tarzi foni — kostyum / libos, 390×720" className="flex flex-col items-center gap-5 px-8 py-16 text-center">
+            <Section id="dresscode" bg={bgs.dressCode} decor="corners" seed={8} className="flex flex-col items-center gap-5 px-8 py-16 text-center">
               {lb(T.dressCodeTitle, L.dressCodeTitle) && <Script>{lb(T.dressCodeTitle, L.dressCodeTitle)}</Script>}
               {c.dressCode.text && <p className="m-0 whitespace-pre-line text-[15px] leading-[1.7] text-[#3F4A3C]">{c.dressCode.text}</p>}
               {c.dressCode.colors.length > 0 && (
@@ -276,7 +308,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 09 gallery */}
           {b.gallery && (data.gallery.length > 0 || slots) && (
-            <Section id="gallery" bg={bgs.gallery} preview={slots} label="Galereya foni, 390×700" className="flex flex-col items-center gap-6 px-6 py-16">
+            <Section id="gallery" bg={bgs.gallery} decor="plain" seed={9} className="flex flex-col items-center gap-6 px-6 py-16">
               {lb(T.galleryTitle, L.galleryTitle) && <Script>{lb(T.galleryTitle, L.galleryTitle)}</Script>}
               <div className="grid w-full grid-cols-2 gap-3">
                 {(data.gallery.length ? data.gallery : [null, null, null, null]).map((g, i) => (
@@ -296,7 +328,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 10 rsvp */}
           {b.rsvp && (
-            <Section id="rsvp" bg={bgs.rsvp} preview={slots} label="RSVP foni — gul kompozitsiya, 390×860" veil={0.62} className="flex flex-col items-center gap-6 px-7 py-16">
+            <Section id="rsvp" bg={bgs.rsvp} decor="corners" seed={10} veil={0.66} className="flex flex-col items-center gap-6 px-7 py-16">
               <div className="text-center">
                 {lb(T.rsvpTitle, L.rsvpTitle) && <Script className="text-[34px]">{lb(T.rsvpTitle, L.rsvpTitle)}</Script>}
                 {c.rsvp.deadline && <p className="m-0 mt-2.5 text-[14px] leading-[1.5] text-[#5A5F48]">{c.rsvp.deadline}</p>}
@@ -319,7 +351,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 11 contacts */}
           {b.contacts && c.contacts.length > 0 && (
-            <Section id="contacts" bg={bgs.contacts} preview={slots} label="Kontaktlar foni, 390×560" className="flex flex-col items-center gap-6 px-8 py-16 text-center">
+            <Section id="contacts" bg={bgs.contacts} decor="plain" seed={11} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
               {lb(T.contactsTitle, L.contactsTitle) && <Script>{lb(T.contactsTitle, L.contactsTitle)}</Script>}
               <div className="flex w-full flex-col gap-4">
                 {c.contacts.map((k, i) => (
@@ -346,7 +378,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 12 closing */}
           {b.closing && (
-            <Section id="closing" bg={bgs.closing} preview={slots} label="Yakun foni — sarv xiyoboni, 390×844" veil={0.35} className="flex min-h-[560px] flex-col items-center justify-center gap-4 px-8 py-20 text-center">
+            <Section id="closing" bg={bgs.closing} decor="cypress" seed={12} veil={0.42} className="flex min-h-[560px] flex-col items-center justify-center gap-4 px-8 py-20 text-center">
               <Script className="text-[38px] [text-wrap:balance]">{c.closing.text}</Script>
               <div className="mt-1 h-px w-14 bg-[#C0A268]" />
               {c.closing.signature.trim() ? (
