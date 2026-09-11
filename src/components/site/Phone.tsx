@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { CatalogItem } from "@/lib/catalog";
+import { DEMO_PHOTOS } from "@/lib/demo-photos";
 
 /**
  * Telefon ramkasi 406×860 (ekran 390×844, radius 40). `scale` bilan kichraytiriladi:
@@ -51,7 +52,7 @@ export function PhoneCover({ item, groom = "Nodirbek", bride = "Malika", date = 
         <div className="mt-[22px] font-ps text-[58px] leading-[1.05]">{groom}</div>
         <div className="my-1 font-cg text-[30px] italic leading-none text-[#B8973F]">&amp;</div>
         <div className="font-ps text-[58px] leading-[1.05]">{bride}</div>
-        <div className="mt-[26px] h-[230px] w-[180px] rounded-t-[90px] border border-[#C9AD5F] p-1.5"><div className="h-full w-full rounded-t-[84px]" style={{ background: "linear-gradient(160deg,#EFE4CC,#DCCB9E)" }} /></div>
+        <div className="mt-[26px] h-[230px] w-[180px] rounded-t-[90px] border border-[#C9AD5F] p-1.5">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={DEMO_PHOTOS.cover} alt="" className="h-full w-full rounded-t-[84px] object-cover" /></div>
         <div className="mt-6 font-cg text-lg font-medium tracking-[.14em]">{date}</div>
         {scrollHint("#8A7A5A", "#C9AD5F")}
       </div>
@@ -66,7 +67,7 @@ export function PhoneCover({ item, groom = "Nodirbek", bride = "Malika", date = 
         <div className="relative mt-6 font-gv text-[66px] leading-[1.05]">{groom}</div>
         <div className="relative font-gv text-[40px] leading-none text-[#C2A36B]">&amp;</div>
         <div className="relative font-gv text-[66px] leading-[1.05]">{bride}</div>
-        <div className="relative mt-[30px] h-[230px] w-[190px] rounded-[95px] border border-[#C2A36B]" style={{ background: "linear-gradient(160deg,#EEF0E6,#D7DDCB)" }} />
+        <div className="relative mt-[30px] h-[230px] w-[190px] overflow-hidden rounded-[95px] border border-[#C2A36B]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={DEMO_PHOTOS.cover} alt="" className="h-full w-full object-cover" /></div>
         <div className="relative mt-[26px] font-cg text-base font-medium tracking-[.16em]">{date}</div>
         {scrollHint("#7A8C6E", "#C2A36B")}
       </div>
@@ -81,7 +82,7 @@ export function PhoneCover({ item, groom = "Nodirbek", bride = "Malika", date = 
           <div className="mt-[26px] font-ab text-[64px] leading-[1.1]">{groom}</div>
           <div className="my-1 font-mc text-[26px] leading-none text-[#C9A961]">&amp;</div>
           <div className="font-ab text-[64px] leading-[1.1]">{bride}</div>
-          <div className="mt-[22px] h-[150px] w-[130px] rounded-t-[65px] border border-[#C9A961]/50" style={{ background: "linear-gradient(160deg,#4A3327,#2B1D16)" }} />
+          <div className="mt-[22px] h-[150px] w-[130px] overflow-hidden rounded-t-[65px] border border-[#C9A961]/50">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={DEMO_PHOTOS.cover} alt="" className="h-full w-full object-cover" /></div>
           <div className="mt-[22px] font-mc text-[15px] tracking-[.18em]">{date}</div>
         </div>
         {scrollHint("rgba(241,230,210,.55)", "#C9A961")}
@@ -172,7 +173,7 @@ export function PhoneScreen({ screen }: { screen: string }) {
         <div className="absolute inset-0 flex flex-col items-center gap-5 bg-[#F5EEDF] px-7 py-[72px] font-mr">
           <div className="text-center"><S>Joy</S><div className="mt-1.5"><H>Manzil</H></div></div>
           <div className="flex w-full flex-col items-center gap-2.5 border border-[#E2D6B8] bg-[#FBF8F1] p-[22px] text-center">
-            <div className="h-[170px] w-full" style={{ background: "linear-gradient(180deg,#F3EAD5,#E6D9B8)" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}<img src={DEMO_PHOTOS.venueHall} alt="" className="h-[170px] w-full object-cover" />
             <div className="mt-1.5 text-[11px] font-medium uppercase tracking-[.24em] text-[#B8973F]">Nikoh to'yi · 18:00</div>
             <div className="font-cg text-2xl font-medium leading-[1.2]">"Navro'z" to'yxonasi</div>
             <div className="text-sm leading-[1.5] text-[#4A423A]">Toshkent, Yunusobod tumani,<br />Amir Temur ko'chasi 108</div>
@@ -205,7 +206,10 @@ export function PhoneScreen({ screen }: { screen: string }) {
         <div className="absolute inset-0 flex flex-col items-center gap-6 bg-[#FBF8F1] px-8 py-20 font-mr">
           <div className="text-center"><S>Lahzalar</S><div className="mt-1.5"><H>Galereya</H></div></div>
           <div className="grid w-full grid-cols-2 gap-2.5">
-            {["linear-gradient(160deg,#EFE4CC,#DCCB9E)", "linear-gradient(200deg,#F3EAD5,#D9C79A)", "linear-gradient(160deg,#E9DDC2,#CDB98A)", "linear-gradient(200deg,#EFE4CC,#DCCB9E)"].map((g, i) => <div key={i} className={`h-[200px] ${i % 2 ? "mt-6" : ""}`} style={{ background: g }} />)}
+            {DEMO_PHOTOS.gallery.map((g, i) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={g} src={g} alt="" className={`h-[200px] w-full object-cover ${i % 2 ? "mt-6" : ""}`} />
+                ))}
           </div>
         </div>
       );

@@ -1,14 +1,10 @@
 import { contentSchema } from "./content";
+import { DEMO_PHOTOS } from "./demo-photos";
 import type { InvitationData } from "@/templates/types";
 
 /** Demo fon musiqasi (Vercel Blob, foydalanuvchi bergan fayl) */
 export const DEMO_MUSIC_URL = "https://qal5gpeam9g7wiee.public.blob.vercel-storage.com/music/demo-1-TK7P6DwcqMlD413GypB7QoO2keRaVp.mp3";
 
-/** Demo uchun gradientli SVG rasm (data URL) */
-export function sampleImage(a: string, b: string, w = 600, h = 800): string {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${a}'/><stop offset='1' stop-color='${b}'/></linearGradient></defs><rect width='${w}' height='${h}' fill='url(%23g)'/></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg).replace(/%2523/g, "%23")}`;
-}
 
 
 /** Katalog demo'si va dizayn tekshiruvi uchun namuna ma'lumot */
@@ -21,8 +17,8 @@ export function sampleInvitation(locale: "UZ" | "RU" = "UZ"): InvitationData {
     groomName: "Nodirbek",
     brideName: "Malika",
     eventAt: new Date("2026-10-12T18:00:00+05:00"),
-    coverImage: sampleImage("#EFE4CC", "#DCCB9E"),
-    gallery: [sampleImage("#EFE4CC", "#DCCB9E"), sampleImage("#F3EAD5", "#D9C79A"), sampleImage("#E9DDC2", "#CDB98A"), sampleImage("#EFE4CC", "#DCCB9E")],
+    coverImage: DEMO_PHOTOS.cover,
+    gallery: [...DEMO_PHOTOS.gallery],
     music: DEMO_MUSIC_URL,
     content: contentSchema.parse({
       blocks: { details: true, dressCode: true, contacts: true, gallery: true },
@@ -40,7 +36,7 @@ export function sampleInvitation(locale: "UZ" | "RU" = "UZ"): InvitationData {
           name: uz ? "Nodirbek uyi" : "Дом Нодирбека",
           address: uz ? "Toshkent, Chilonzor 20-kvartal" : "Ташкент, Чиланзар, 20 квартал",
           mapUrl: "https://yandex.uz/maps/",
-          image: sampleImage("#F3EAD5", "#E6D9B8", 800, 400),
+          image: DEMO_PHOTOS.venueHouse,
         },
         {
           title: uz ? "Nikoh to'yi" : "Свадьба",
@@ -48,7 +44,7 @@ export function sampleInvitation(locale: "UZ" | "RU" = "UZ"): InvitationData {
           name: uz ? "«Navro'z» to'yxonasi" : "Банкетный зал «Навруз»",
           address: uz ? "Toshkent, Yunusobod tumani, Amir Temur ko'chasi 108" : "Ташкент, Юнусабадский район, ул. Амира Темура 108",
           mapUrl: "https://yandex.uz/maps/",
-          image: sampleImage("#F3EAD5", "#E6D9B8", 800, 500),
+          image: DEMO_PHOTOS.venueHall,
         },
       ],
       schedule: uz
