@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin, loginAdmin, logoutAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { paidExpiry, trialExpiry } from "@/lib/lifecycle";
 import { invitationInput, templateInput } from "@/lib/validators";
 import { getTemplateMeta } from "@/templates/registry";
 
@@ -62,9 +63,46 @@ export async function saveInvitation(id: string | null, raw: unknown): Promise<{
   return { id: inv.id };
 }
 
-export async function setStatus(id: string, status: "DRAFT" | "PUBLISHED" | "ARCHIVED") {
+export async function setStatus(id: string, status: "DRAFT" | "PENDING" | "PUBLISHED" | "ARCHIVED") {
   await requireAdmin();
   const inv = await prisma.invitation.update({ where: { id }, data: { status } });
+  revalidatePath("/admin");
+  revalidatePath(`/s/${inv.slug}`);
+}
+
+/**
+ * Admin tasdiqlaydi: havola ochiladi va 24 soat ishlaydi.
+ * To'langandan keyin muddat to'y kuni + 90 kunga uzayadi (markPaid).
+ */
+export async function approveInvitation(id: string) {
+  await requireAdmin();
+  const cur = await prisma.invitation.findUnique({ where: { id }, select: { paid: true, eventAt: true } });
+  if (!cur) return;
+  const inv = await prisma.invitation.update({
+    where: { id },
+    data: {
+      status: "PUBLISHED",
+      approvedAt: new Date(),
+      expiresAt: cur.paid ? paidExpiry(cur.eventAt) : trialExpiry(),
+    },
+  });
+  revalidatePath("/admin");
+  revalidatePath(`/s/${inv.slug}`);
+}
+
+/** To'lov holatini belgilash. To'langanda muddat to'ygacha uzayadi. */
+export async function markPaid(id: string, paid: boolean) {
+  await requireAdmin();
+  const cur = await prisma.invitation.findUnique({ where: { id }, select: { eventAt: true, status: true, expiresAt: true } });
+  if (!cur) return;
+  const inv = await prisma.invitation.update({
+    where: { id },
+    data: {
+      paid,
+      // to'landi -> to'ygacha; to'lov bekor qilindi -> sinov muddatiga qaytadi
+      expiresAt: paid ? paidExpiry(cur.eventAt) : cur.status === "PUBLISHED" ? trialExpiry() : cur.expiresAt,
+    },
+  });
   revalidatePath("/admin");
   revalidatePath(`/s/${inv.slug}`);
 }

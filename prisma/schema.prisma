@@ -10,9 +10,15 @@ datasource db {
 // ─── Enums ────────────────────────────────────────────────────────────────
 
 enum InvitationStatus {
-  DRAFT      // admin ishlayapti, subdomen ochilmaydi
-  PUBLISHED  // subdomen ochiq
-  ARCHIVED   // to'y o'tgan, subdomen "muddati tugagan" sahifani ko'rsatadi
+  DRAFT // to'ldirilmoqda (bot suhbati yoki admin qoralamasi), subdomen yopiq
+  PENDING // mijoz botda tugatdi, admin tasdiqlashini kutmoqda
+  PUBLISHED // subdomen ochiq (sinov kuni yoki to'langan muddat - expiresAt belgilaydi)
+  ARCHIVED // muddati tugagan yoki to'y o'tgan
+}
+
+enum InvitationSource {
+  ADMIN // admin o'zi kiritgan
+  BOT // Telegram bot orqali mijoz to'ldirgan
 }
 
 enum Locale {
@@ -53,10 +59,22 @@ model Invitation {
   ogImage    String?
 
   // Mijoz va to'lov (faqat admin uchun)
+  /// Qayerdan kelgan: admin qo'lda kiritdimi yoki bot orqali mijozmi
+  source InvitationSource @default(ADMIN)
+
   clientName  String?
   clientPhone String?
+
+  // ─── Telegram bot ───────────────────────────────────────────────────
+  /// Botda to'ldirgan mijozning chat id'si (xabar yuborish uchun)
+  tgChatId    BigInt?
+  tgUsername  String?
+  /// Mijoz botda "tayyor" deganda
+  submittedAt DateTime?
+  /// Admin tasdiqlaganda
+  approvedAt  DateTime?
   price       Int?
-  paid        Boolean @default(false)
+  paid        Boolean   @default(false)
   note        String?
 
   /// Shu sanadan keyin ARCHIVED deb hisoblanadi
@@ -76,14 +94,14 @@ model Rsvp {
   invitationId String
   invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
-  name       String
-  phone      String?
-  attending  Attendance
-  guests     Int        @default(1)
-  note       String?
+  name      String
+  phone     String?
+  attending Attendance
+  guests    Int        @default(1)
+  note      String?
   /// ?m= parametridan kelgan shaxsiy murojaat (kim orqali ochilgan)
-  invitedAs  String?
-  createdAt  DateTime   @default(now())
+  invitedAs String?
+  createdAt DateTime   @default(now())
 
   @@index([invitationId, createdAt])
 }
@@ -92,14 +110,14 @@ model Rsvp {
 
 model Template {
   /// src/templates/registry.ts dagi id bilan bir xil
-  id          String  @id
+  id          String   @id
   name        String
   /// Katalogdagi qisqa tavsif
-  description String  @default("")
+  description String   @default("")
   /// Ichki sahifadagi to'liq matn
-  body        String  @default("")
+  body        String   @default("")
   /// "classic" | "floral" | "dark" | "national" | "minimal"
-  category    String  @default("classic")
+  category    String   @default("classic")
   /// so'mda; null bo'lsa "narx so'rang"
   price       Int?
   /// Katalog kartasi rasmi (Blob URL yoki /templates/<id>.jpg)
@@ -109,10 +127,10 @@ model Template {
   /// Ichki sahifada "Nimalar kiradi" ro'yxati
   features    String[] @default([])
   /// Kataloqda ko'rsatish
-  published   Boolean @default(true)
+  published   Boolean  @default(true)
   /// Yangi / Mashhur kabi belgi
   badge       String?
-  sortOrder   Int     @default(0)
+  sortOrder   Int      @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

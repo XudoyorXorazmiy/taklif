@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { trialHoursLeft } from "@/lib/lifecycle";
 import { formatDate } from "@/lib/i18n";
 import { displayName, invitationUrl } from "@/lib/site";
 import { getTemplateMeta } from "@/templates/registry";
 import { DuplicateButton } from "@/components/admin/DuplicateButton";
 
-const statusLabel = { DRAFT: "Qoralama", PUBLISHED: "Nashrda", ARCHIVED: "Arxiv" } as const;
+const statusLabel = { DRAFT: "Qoralama", PENDING: "Tasdiq kutmoqda", PUBLISHED: "Nashrda", ARCHIVED: "Arxiv" } as const;
 const statusClass = {
   DRAFT: "bg-neutral-100 text-neutral-600",
+  PENDING: "bg-amber-100 text-amber-800",
   PUBLISHED: "bg-emerald-100 text-emerald-700",
   ARCHIVED: "bg-amber-100 text-amber-700",
 } as const;
@@ -16,7 +18,7 @@ const statusClass = {
 export default async function AdminHome() {
   await requireAdmin();
   const list = await prisma.invitation.findMany({
-    orderBy: { createdAt: "desc" },
+    orderBy: [{ status: "asc" }, { createdAt: "desc" }],
     include: { _count: { select: { rsvps: true } } },
   });
 
@@ -72,7 +74,20 @@ export default async function AdminHome() {
                       {i._count.rsvps}
                     </Link>
                   </td>
-                  <td className="px-4 py-3">{i.paid ? "✅" : i.price ? `${i.price.toLocaleString("ru-RU")} so'm` : "—"}</td>
+                  <td className="px-4 py-3">
+                    {i.paid ? (
+                      <span className="text-emerald-700">To'langan</span>
+                    ) : (
+                      <>
+                        <div>{i.price ? `${i.price.toLocaleString("ru-RU")} so'm` : "—"}</div>
+                        {trialHoursLeft(i) !== null && (
+                          <div className={`text-xs ${trialHoursLeft(i)! > 0 ? "text-amber-700" : "text-red-600"}`}>
+                            {trialHoursLeft(i)! > 0 ? `sinov: ${trialHoursLeft(i)} soat` : "sinov tugadi"}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-right">
                     <DuplicateButton id={i.id} />
                   </td>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useTransition } from "react";
-import { deleteInvitation, duplicateInvitation, setStatus } from "@/app/admin/actions";
+import { approveInvitation, deleteInvitation, duplicateInvitation, setStatus } from "@/app/admin/actions";
 
-export function StatusBar({ id, status }: { id: string; status: "DRAFT" | "PUBLISHED" | "ARCHIVED" }) {
+export function StatusBar({ id, status }: { id: string; status: "DRAFT" | "PENDING" | "PUBLISHED" | "ARCHIVED" }) {
   const [pending, start] = useTransition();
   const btn = "rounded-lg border px-3 py-1.5 text-sm disabled:opacity-50";
   return (
@@ -12,8 +12,13 @@ export function StatusBar({ id, status }: { id: string; status: "DRAFT" | "PUBLI
         Nusxa olish
       </button>
       {status !== "PUBLISHED" && (
-        <button disabled={pending} onClick={() => start(() => setStatus(id, "PUBLISHED"))} className={`${btn} border-emerald-600 bg-emerald-600 text-white`}>
-          Nashr qilish
+        <button
+          disabled={pending}
+          onClick={() => start(() => approveInvitation(id))}
+          className={`${btn} border-emerald-600 bg-emerald-600 text-white`}
+          title="Havola ochiladi va 24 soat ishlaydi"
+        >
+          {status === "PENDING" ? "Tasdiqlash" : "Nashr qilish"}
         </button>
       )}
       {status === "PUBLISHED" && (

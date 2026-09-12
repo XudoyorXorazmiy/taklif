@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { prisma } from "./db";
 import { parseContent } from "./content";
+export { isExpired, isLive, isTrial } from "./lifecycle";
 import type { InvitationData } from "@/templates/types";
 
 /** Subdomen bo'yicha nashr qilingan taklifnoma (sahifa va OG rasm bir so'rovda ulashadi) */
@@ -37,7 +38,3 @@ export function toTemplateData(inv: {
   };
 }
 
-export function isExpired(inv: { status: string; expiresAt: Date | null }): boolean {
-  if (inv.status === "ARCHIVED") return true;
-  return !!inv.expiresAt && inv.expiresAt.getTime() < Date.now();
-}
