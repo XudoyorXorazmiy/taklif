@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { parseContent } from "@/lib/content";
 import { displayName, invitationUrl } from "@/lib/site";
+import { getTracks } from "@/lib/tracks";
 import { InvitationForm } from "@/components/admin/InvitationForm";
 import { StatusBar } from "@/components/admin/StatusBar";
 import { GuestLinks } from "@/components/admin/GuestLinks";
@@ -18,6 +19,7 @@ function toLocalInput(d: Date | null): string | null {
 
 export default async function EditInvitation({ params }: PageProps<"/admin/[id]">) {
   await requireAdmin();
+  const tracks = await getTracks();
   const { id } = await params;
   const inv = await prisma.invitation.findUnique({ where: { id }, include: { _count: { select: { rsvps: true } } } });
   if (!inv) notFound();
@@ -52,6 +54,7 @@ export default async function EditInvitation({ params }: PageProps<"/admin/[id]"
 
       <div className="mt-6">
         <InvitationForm
+          tracks={tracks}
           id={inv.id}
           initial={{
             slug: inv.slug,

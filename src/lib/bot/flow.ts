@@ -1,3 +1,4 @@
+import { getTracks, trackLabel } from "@/lib/tracks";
 import type { InlineButton } from "@/lib/telegram";
 import { templates } from "@/templates/registry";
 
@@ -16,6 +17,7 @@ export interface BotData {
   phoneBride?: string;
   cover?: string;
   gallery?: string[];
+  music?: string;
 }
 
 export type StepKind = "choice" | "text" | "photo";
@@ -26,7 +28,7 @@ export interface Step {
   /** Savol matni */
   ask: (d: BotData) => string;
   /** Tanlov qadamlari uchun tugmalar */
-  choices?: () => InlineButton[][];
+  choices?: () => InlineButton[][] | Promise<InlineButton[][]>;
   /** Bo'sh qoldirish mumkinmi */
   optional?: boolean;
   /** Matnni tekshirish; xato bo'lsa xabar qaytaradi */
@@ -154,6 +156,21 @@ export const steps: Step[] = [
     multi: true,
     ask: () =>
       "<b>Galereya uchun rasmlar</b>\n\n4 tagacha rasm yuborishingiz mumkin. Yuborib bo'lgach «Tayyor» tugmasini bosing.",
+  },
+  {
+    key: "music",
+    kind: "choice",
+    optional: true,
+    ask: () =>
+      "<b>Fon musiqasi</b>\n\nChapdagi tugma qo'shiqni shu yerda tinglatadi, o'ngdagisi uni tanlaydi.\n" +
+      "Musiqa kerak bo'lmasa, o'tkazib yuboring.",
+    choices: async () => {
+      const tracks = await getTracks();
+      return tracks.map((t) => [
+        { text: trackLabel(t), data: `play:${t.id}` },
+        { text: "Tanlash", data: `mus:${t.id}` },
+      ]);
+    },
   },
 ];
 

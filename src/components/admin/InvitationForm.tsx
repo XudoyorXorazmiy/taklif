@@ -9,7 +9,7 @@ import { defaultContent, type InvitationContent } from "@/lib/content";
 import { slugify } from "@/lib/site";
 import { templates } from "@/templates/registry";
 
-type Props = { id?: string; initial?: InvitationInput };
+type Props = { id?: string; initial?: InvitationInput; tracks?: { id: string; title: string; artist: string; url: string }[] };
 
 const blockLabels: Record<keyof InvitationContent["blocks"], string> = {
   greeting: "Salomlashuv",
@@ -67,7 +67,7 @@ function Upload({ folder, onDone, accept, label }: { folder: string; onDone: (ur
   );
 }
 
-export function InvitationForm({ id, initial }: Props) {
+export function InvitationForm({ id, initial, tracks = [] }: Props) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -240,17 +240,28 @@ export function InvitationForm({ id, initial }: Props) {
                 )}
               </div>
             </div>
-            <div>
-              <span className={lbl}>Fon musiqasi (mp3)</span>
-              <div className="flex items-center gap-3">
+            <div className="sm:col-span-2">
+              <span className={lbl}>Fon musiqasi</span>
+              <div className="flex flex-wrap items-center gap-3">
+                <select
+                  className={`${inp} max-w-[260px]`}
+                  value={tracks.some((t) => t.url === v.music) ? (v.music ?? "") : v.music ? "__custom" : ""}
+                  onChange={(e) => set("music", e.target.value === "" ? null : e.target.value === "__custom" ? v.music : e.target.value)}
+                >
+                  <option value="">Musiqasiz</option>
+                  {tracks.map((t) => (
+                    <option key={t.id} value={t.url}>
+                      {t.artist ? `${t.title} — ${t.artist}` : t.title}
+                    </option>
+                  ))}
+                  {v.music && !tracks.some((t) => t.url === v.music) && <option value="__custom">Alohida yuklangan fayl</option>}
+                </select>
                 {v.music && <audio src={v.music} controls className="h-8 w-44" />}
-                <Upload folder={v.slug || "music"} accept="audio/*" label="Musiqa yuklash" onDone={(u) => set("music", u)} />
-                {v.music && (
-                  <button type="button" className="text-sm text-red-600" onClick={() => set("music", null)}>
-                    olib tashlash
-                  </button>
-                )}
+                <Upload folder={v.slug || "music"} accept="audio/*" label="O'z faylini yuklash" onDone={(u) => set("music", u)} />
               </div>
+              <p className="mt-1 text-xs text-neutral-500">
+                Ro'yxat <a href="/admin/music" className="underline">Musiqa</a> bo'limidan keladi.
+              </p>
             </div>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={c.hero.intro} onChange={(e) => setC("hero", { ...c.hero, intro: e.target.checked })} />

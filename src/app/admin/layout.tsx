@@ -21,6 +21,9 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
               <Link href="/admin/templates" className="text-neutral-600 hover:text-neutral-900">
                 Shablonlar
               </Link>
+              <Link href="/admin/music" className="text-neutral-600 hover:text-neutral-900">
+                Musiqa
+              </Link>
               <Link href="/admin/new" className="rounded-lg bg-neutral-900 px-3 py-1.5 text-white">
                 + Yangi taklifnoma
               </Link>

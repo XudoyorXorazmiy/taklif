@@ -5,7 +5,7 @@ import { defaultContent } from "@/lib/content";
 import { prisma } from "@/lib/db";
 import { RESERVED_SLUGS, invitationUrl, slugify } from "@/lib/site";
 import { ADMIN_TELEGRAM } from "@/lib/site-content";
-import { answerCallback, downloadFile, getFilePath, notifyAdmin, sendMessage } from "@/lib/telegram";
+import { answerCallback, downloadFile, getFilePath, notifyAdmin, sendAudio, sendMessage } from "@/lib/telegram";
 import { getTemplateMeta, templates } from "@/templates/registry";
 import { DONE_DATA, SKIP_DATA, type BotData, optionalButtons, stepByKey, steps } from "./flow";
 
@@ -37,12 +37,22 @@ async function save(chatId: number, step: string, data: BotData) {
 }
 
 /** Navbatdagi savolni yuborish (yoki tugatish) */
-async function askStep(chatId: number, key: string, data: BotData, prefix = "") {
+async function askStep(chatId: number, key: string, data: BotData, prefix = ""): Promise<void> {
   const step = stepByKey(key);
   if (!step) return finish(chatId, data);
+
+  const choices = step.choices ? await step.choices() : undefined;
+  // tanlov qadami bo'sh bo'lsa (masalan kutubxonada qo'shiq yo'q) - o'tkazib yuboramiz
+  if (step.choices && (!choices || choices.length === 0)) {
+    const nk = nextKey(key);
+    await save(chatId, nk ?? "done", data);
+    return nk ? askStep(chatId, nk, data) : finish(chatId, data);
+  }
+
   const n = steps.findIndex((s) => s.key === key) + 1;
   const head = `<i>${n}/${steps.length}</i>\n`;
-  await sendMessage(chatId, prefix + head + step.ask(data), step.choices?.() ?? optionalButtons(step));
+  const buttons = choices ? [...choices, ...(optionalButtons(step) ?? [])] : optionalButtons(step);
+  await sendMessage(chatId, prefix + head + step.ask(data), buttons);
 }
 
 function nextKey(key: string): string | null {
@@ -114,6 +124,7 @@ async function createInvitation(chatId: number, d: BotData) {
       eventAt,
       content: content as object,
       coverImage: d.cover ?? null,
+      music: d.music ?? null,
       gallery: d.gallery ?? [],
       clientName: session?.fullName ?? null,
       clientPhone: d.phoneGroom ?? null,
@@ -127,7 +138,7 @@ async function createInvitation(chatId: number, d: BotData) {
 }
 
 /** Suhbat yakuni */
-async function finish(chatId: number, d: BotData) {
+async function finish(chatId: number, d: BotData): Promise<void> {
   const inv = await createInvitation(chatId, d);
   const tpl = getTemplateMeta(inv.templateId)?.name ?? inv.templateId;
 
@@ -198,6 +209,20 @@ export async function handleUpdate(update: TgUpdate): Promise<void> {
       const nk = nextKey(key);
       await save(chatId, nk ?? "done", data);
       await sendMessage(chatId, `Tanlandi: <b>${getTemplateMeta(id)!.name}</b>`);
+      return nk ? askStep(chatId, nk, data) : finish(chatId, data);
+    }
+    if (d.startsWith("play:")) {
+      const t = await prisma.track.findUnique({ where: { id: d.slice(5) } });
+      if (t) await sendAudio(chatId, t.url, t.title, t.artist || undefined);
+      return;
+    }
+    if (d.startsWith("mus:")) {
+      const t = await prisma.track.findUnique({ where: { id: d.slice(4) } });
+      if (!t) return;
+      data.music = t.url;
+      const nk = nextKey(key);
+      await save(chatId, nk ?? "done", data);
+      await sendMessage(chatId, `Tanlandi: <b>${t.title}</b>${t.artist ? ` — ${t.artist}` : ""}`);
       return nk ? askStep(chatId, nk, data) : finish(chatId, data);
     }
     if (d === SKIP_DATA || d === DONE_DATA) {

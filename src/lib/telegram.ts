@@ -51,6 +51,16 @@ export function sendMessage(chatId: bigint | number | string, text: string, butt
   });
 }
 
+/** Audio yuborish - Telegram havoladan o'zi yuklab oladi */
+export function sendAudio(chatId: bigint | number | string, url: string, title?: string, performer?: string) {
+  return call("sendAudio", {
+    chat_id: String(chatId),
+    audio: url,
+    ...(title ? { title } : {}),
+    ...(performer ? { performer } : {}),
+  });
+}
+
 /** Tugma bosilganda "soat" belgisini o'chirish */
 export function answerCallback(id: string, text?: string) {
   return call("answerCallbackQuery", { callback_query_id: id, ...(text ? { text } : {}) });

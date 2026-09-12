@@ -45,3 +45,12 @@ export const templateInput = z.object({
   sortOrder: z.number().int().default(0),
 });
 export type TemplateInput = z.infer<typeof templateInput>;
+
+export const trackInput = z.object({
+  title: z.string().trim().min(1, "Qo'shiq nomi kerak").max(80),
+  artist: z.string().trim().max(80).default(""),
+  url: z.string().url("Fayl havolasi noto'g'ri"),
+  published: z.boolean().default(true),
+  sortOrder: z.number().int().default(0),
+});
+export type TrackInput = z.infer<typeof trackInput>;

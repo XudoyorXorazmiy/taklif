@@ -8,7 +8,7 @@ import { paidExpiry, trialExpiry } from "@/lib/lifecycle";
 import { invitationUrl } from "@/lib/site";
 import { ADMIN_TELEGRAM } from "@/lib/site-content";
 import { sendMessage } from "@/lib/telegram";
-import { invitationInput, templateInput } from "@/lib/validators";
+import { invitationInput, templateInput, trackInput } from "@/lib/validators";
 import { getTemplateMeta } from "@/templates/registry";
 
 export async function loginAction(_: unknown, form: FormData) {
@@ -207,4 +207,29 @@ export async function duplicateInvitation(id: string) {
   });
   revalidatePath("/admin");
   redirect(`/admin/${copy.id}`);
+}
+
+// ─── Fon musiqasi kutubxonasi ─────────────────────────────────────────────
+
+export async function saveTrack(id: string | null, raw: unknown): Promise<{ ok?: true; error?: string }> {
+  await requireAdmin();
+  const parsed = trackInput.safeParse(raw);
+  if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Xato" };
+  const d = parsed.data;
+  if (id) await prisma.track.update({ where: { id }, data: d });
+  else await prisma.track.create({ data: d });
+  revalidatePath("/admin/music");
+  return { ok: true };
+}
+
+export async function setTrackPublished(id: string, published: boolean) {
+  await requireAdmin();
+  await prisma.track.update({ where: { id }, data: { published } });
+  revalidatePath("/admin/music");
+}
+
+export async function deleteTrack(id: string) {
+  await requireAdmin();
+  await prisma.track.delete({ where: { id } });
+  revalidatePath("/admin/music");
 }
