@@ -33,24 +33,28 @@ const C = {
 const softBg = "radial-gradient(120% 90% at 50% 0%, #FBF8F4 0%, #F1ECE4 55%, #E7E2D8 100%)";
 
 const rsvpUi: RsvpUi = {
-  form: "flex w-full flex-col gap-4",
+  form: "flex w-full flex-col gap-3",
   label: "font-mr text-[13px] font-medium text-[#2C4130]",
   input:
-    "h-[52px] w-full rounded-[26px] border border-[rgba(44,65,48,.25)] bg-white/70 px-5 font-mr text-[15px] text-[#2C4130] outline-none backdrop-blur placeholder:text-[#2C4130]/40 focus:border-[#2C4130]",
-  option: "flex min-h-[52px] items-center gap-3 rounded-[26px] border border-[rgba(44,65,48,.25)] bg-white/50 px-5 py-3 text-left font-mr text-[15px] text-[#2C4130] backdrop-blur",
-  optionActive: "flex min-h-[52px] items-center gap-3 rounded-[26px] border border-[#2C4130] bg-white/85 px-5 py-3 text-left font-mr text-[15px] font-semibold text-[#2C4130] backdrop-blur",
+    "h-[46px] w-full rounded-[23px] border border-[rgba(44,65,48,.25)] bg-white/70 px-5 font-mr text-[15px] text-[#2C4130] outline-none backdrop-blur placeholder:text-[#2C4130]/40 focus:border-[#2C4130]",
+  option: "flex min-h-[46px] items-center gap-3 rounded-[23px] border border-[rgba(44,65,48,.25)] bg-white/50 px-5 py-3 text-left font-mr text-[15px] text-[#2C4130] backdrop-blur",
+  optionActive: "flex min-h-[46px] items-center gap-3 rounded-[23px] border border-[#2C4130] bg-white/85 px-5 py-3 text-left font-mr text-[15px] font-semibold text-[#2C4130] backdrop-blur",
   dot: "grid h-5 w-5 flex-none place-items-center rounded-full border border-[rgba(44,65,48,.5)]",
   dotActive: "grid h-5 w-5 flex-none place-items-center rounded-full border-2 border-[#2C4130]",
   dotInner: "h-2.5 w-2.5 rounded-full bg-[#2C4130]",
-  stepper: "flex h-[52px] overflow-hidden rounded-[26px] border border-[rgba(44,65,48,.25)] bg-white/70 backdrop-blur",
-  stepperBtn: "grid w-[52px] place-items-center border-[rgba(44,65,48,.2)] font-cg text-2xl text-[#2C4130]",
+  stepper: "flex h-[46px] overflow-hidden rounded-[23px] border border-[rgba(44,65,48,.25)] bg-white/70 backdrop-blur",
+  stepperBtn: "grid w-[46px] place-items-center border-[rgba(44,65,48,.2)] font-cg text-2xl text-[#2C4130]",
   stepperVal: "flex flex-1 items-center justify-center font-mr text-base font-medium text-[#2C4130]",
-  button: "mt-1 h-[54px] rounded-[27px] bg-[#2B3A2E] font-mr text-[15px] font-semibold text-[#F3EFE8] disabled:opacity-60",
+  button: "h-[48px] rounded-[24px] bg-[#2B3A2E] font-mr text-[15px] font-semibold text-[#F3EFE8] disabled:opacity-60",
   sent: "flex w-full flex-col items-center gap-3 rounded-3xl border border-[rgba(44,65,48,.2)] bg-white/70 px-6 py-9 text-center backdrop-blur",
   sentIcon: "grid h-14 w-14 place-items-center rounded-full border border-[#C0A268] font-cg text-2xl text-[#C0A268]",
   sentTitle: "font-cg text-[34px] italic leading-none text-[#2C4130]",
   sentText: "font-mr text-[15px] leading-[1.6] text-[#5A5F48]",
 };
+
+/** Fon panelining nisbati (820x1487) - blok shu o'lchovda chiziladi */
+/** 1487/820 = 181.34% - konteyner kengligiga nisbatan panel balandligi */
+const PANEL_ASPECT = "min-h-[181.34cqw]";
 
 /** Blok fonlari: rasm bo'lsa rasm, bo'lmasa o'z akvarel dekoratsiyamiz */
 type DecorKind = "arch" | "garland" | "corners" | "cypress" | "plain";
@@ -83,12 +87,19 @@ function Decor({ kind, seed }: { kind: DecorKind; seed: number }) {
   );
 }
 
-function Bg({ src, decor, seed, veil = 0.55 }: { src?: string; decor: DecorKind; seed: number; veil?: number }) {
+type PanelBg = { src: string; edge?: string };
+
+function Bg({ bg, decor, seed, veil = 0.55 }: { bg?: PanelBg; decor: DecorKind; seed: number; veil?: number }) {
   return (
     <>
-      {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      {bg ? (
+        <>
+          {/* blok paneldan uzunroq bo'lsa, ortig'i panelning pastki chet rangi bilan to'ladi */}
+          <div className="absolute inset-0" style={{ background: bg.edge ?? softBg }} />
+          {/* rasm to'liq kengligida, tepadan: hech qachon qirqilmaydi */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={bg.src} alt="" className="absolute inset-x-0 top-0 w-full" />
+        </>
       ) : (
         <Decor kind={decor} seed={seed} />
       )}
@@ -104,10 +115,13 @@ function Script({ children, className = "" }: { children: React.ReactNode; class
   return <div className={`font-cg text-[38px] font-medium italic leading-[1.15] text-[#2C4130] ${className}`}>{children}</div>;
 }
 
-function Section({ id, bg, decor = "plain", seed = 0, veil, className = "", children }: { id: string; bg?: string; decor?: DecorKind; seed?: number; veil?: number; className?: string; children: React.ReactNode }) {
+function Section({ id, bg, decor = "plain", seed = 0, veil, className = "", children }: { id: string; bg?: PanelBg; decor?: DecorKind; seed?: number; veil?: number; className?: string; children: React.ReactNode }) {
+  // Fon rasmi panel nisbatida to'liq ko'rinadi (hoshiyalari qirqilmaydi),
+  // kontent uning ochiq markaziga joylashadi. Kontent uzun bo'lsa blok o'sadi.
+  const fit = bg ? `${PANEL_ASPECT} justify-center` : "";
   return (
-    <Reveal as="section" id={id} className={`relative isolate overflow-hidden ${className}`}>
-      <Bg src={bg} decor={decor} seed={seed} veil={veil} />
+    <Reveal as="section" id={id} className={`relative isolate overflow-hidden ${fit} ${className}`}>
+      <Bg bg={bg} decor={decor} seed={seed} veil={veil} />
       <div className="relative z-[2]">{children}</div>
     </Reveal>
   );
@@ -139,7 +153,10 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
   const b = c.blocks;
   const T = c.labels;
   /** Blok foni: admin yuklagan rasm, bo'lmasa shablonning standart akvarel sahnasi */
-  const bg = (k: BgKey) => c.backgrounds[k]?.trim() || DEFAULT_BG[k];
+  const bg = (k: BgKey): PanelBg => {
+    const custom = c.backgrounds[k]?.trim();
+    return custom ? { src: custom } : { src: DEFAULT_BG[k].url, edge: DEFAULT_BG[k].edge };
+  };
   const lb = (v: string, d: string) => (v.trim() === "-" ? null : v.trim() || d);
   const initials =
     c.hero.initials.trim() || (data.groomName || data.brideName ? `${data.groomName[0] ?? ""} & ${data.brideName[0] ?? ""}` : "♥");
@@ -154,10 +171,10 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
       intro={<Cover initials={initials} hint={L.tapToOpen} eyebrow={L.introEyebrow} />}
     >
       <Frame color="#E4DFD5">
-        <div className={`${fontVars} relative min-h-dvh bg-[#EFEAE4] font-mr text-[#2C4130]`}>
+        <div className={`${fontVars} @container relative min-h-dvh bg-[#EFEAE4] font-mr text-[#2C4130]`}>
           {/* 01 cover */}
-          <section id="cover" className="relative isolate flex h-[844px] flex-col items-center justify-end overflow-hidden px-8 pb-24 text-center">
-            <Bg src={bg("cover")} decor="arch" seed={1} veil={0.24} />
+          <section id="cover" className={`relative isolate flex ${PANEL_ASPECT} flex-col items-center justify-end overflow-hidden px-8 pb-[14%] text-center`}>
+            <Bg bg={bg("cover")} decor="arch" seed={1} veil={0.24} />
             <div className="relative z-[2] flex flex-col items-center">
               {c.hero.eyebrow && <div className="mb-5 text-[11px] font-medium uppercase tracking-[.34em] text-[#5A5F48]">{c.hero.eyebrow}</div>}
               {c.hero.title ? (
@@ -175,7 +192,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 02 greeting */}
           {b.greeting && (
-            <Section id="greeting" bg={bg("greeting")} decor="garland" seed={2} className="flex flex-col items-center gap-4 px-8 py-16 text-center">
+            <Section id="greeting" bg={bg("greeting")} decor="garland" seed={2} className="flex flex-col items-center gap-4 px-8 py-10 text-center">
               {guest && <div className="font-cg text-[24px] font-medium italic text-[#5A5F48]">{L.dear} {guest},</div>}
               <Script className="text-[40px]">{formatDate(data.eventAt, locale)}</Script>
               <div className="mt-1 h-px w-14 bg-[#C0A268]" />
@@ -186,7 +203,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 03 date — kalendar */}
           {b.date && (
-            <Section id="date" bg={bg("date")} decor="corners" seed={3} className="flex flex-col items-center gap-6 px-8 py-16">
+            <Section id="date" bg={bg("date")} decor="corners" seed={3} className="flex flex-col items-center gap-6 px-8 py-10">
               {lb(T.dateTitle, L.dateTitle) && <Script>{lb(T.dateTitle, L.dateTitle)}</Script>}
               <div className="text-center">
                 <div className="font-cg text-[34px] font-medium leading-[1.1]">{formatDate(data.eventAt, locale)}</div>
@@ -211,7 +228,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 04 countdown — oltin doira */}
           {b.countdown && (
-            <Section id="countdown" bg={bg("countdown")} decor="cypress" seed={4} veil={0.5} className="flex flex-col items-center px-6 py-16">
+            <Section id="countdown" bg={bg("countdown")} decor="cypress" seed={4} veil={0.5} className="flex flex-col items-center px-6 py-10">
               <div className="relative grid aspect-square w-full max-w-[330px] place-items-center">
                 <div className="absolute inset-0 rounded-full border border-[#C0A268]" />
                 <div className="absolute inset-[10px] rounded-full border border-[#C0A268]/35" />
@@ -234,7 +251,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 05 venue */}
           {b.venues && venues.length > 0 && (
-            <Section id="venue" bg={bg("venue")} decor="arch" seed={5} veil={0.62} className="flex flex-col items-center gap-7 px-8 py-16 text-center">
+            <Section id="venue" bg={bg("venue")} decor="arch" seed={5} veil={0.62} className="flex flex-col items-center gap-7 px-8 py-10 text-center">
               {lb(T.venueTitle, L.venueTitle) && <Script>{lb(T.venueTitle, L.venueTitle)}</Script>}
               {venues.map((v, i) => (
                 <div key={i} className="flex w-full flex-col items-center gap-2.5">
@@ -260,7 +277,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 06 schedule */}
           {b.schedule && c.schedule.length > 0 && (
-            <Section id="schedule" bg={bg("schedule")} decor="garland" seed={6} veil={0.6} className="flex flex-col items-center gap-6 px-8 py-16">
+            <Section id="schedule" bg={bg("schedule")} decor="garland" seed={6} veil={0.6} className="flex flex-col items-center gap-6 px-8 py-10">
               <div className="text-center">
                 {lb(T.scheduleTitle, L.scheduleTitle) && <Script>{lb(T.scheduleTitle, L.scheduleTitle)}</Script>}
                 <div className="mt-2 text-[15px] text-[#5A5F48]">{formatDate(data.eventAt, locale)}</div>
@@ -282,7 +299,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 07 details */}
           {b.details && c.details.length > 0 && (
-            <Section id="details" bg={bg("details")} decor="corners" seed={7} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
+            <Section id="details" bg={bg("details")} decor="corners" seed={7} className="flex flex-col items-center gap-6 px-8 py-10 text-center">
               {lb(T.detailsTitle, L.detailsTitle) && <Script>{lb(T.detailsTitle, L.detailsTitle)}</Script>}
               {c.details.map((d, i) => (
                 <div key={i} className="w-full max-w-[320px]">
@@ -295,7 +312,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 08 dresscode */}
           {b.dressCode && (c.dressCode.text || c.dressCode.colors.length > 0) && (
-            <Section id="dresscode" bg={bg("dressCode")} decor="corners" seed={8} className="flex flex-col items-center gap-5 px-8 py-16 text-center">
+            <Section id="dresscode" bg={bg("dressCode")} decor="corners" seed={8} className="flex flex-col items-center gap-5 px-8 py-10 text-center">
               {lb(T.dressCodeTitle, L.dressCodeTitle) && <Script>{lb(T.dressCodeTitle, L.dressCodeTitle)}</Script>}
               {c.dressCode.text && <p className="m-0 whitespace-pre-line text-[15px] leading-[1.7] text-[#3F4A3C]">{c.dressCode.text}</p>}
               {c.dressCode.colors.length > 0 && (
@@ -310,7 +327,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 09 gallery */}
           {b.gallery && (data.gallery.length > 0 || slots) && (
-            <Section id="gallery" bg={bg("gallery")} decor="plain" seed={9} className="flex flex-col items-center gap-6 px-6 py-16">
+            <Section id="gallery" bg={bg("gallery")} decor="plain" seed={9} className="flex flex-col items-center gap-6 px-6 py-10">
               {lb(T.galleryTitle, L.galleryTitle) && <Script>{lb(T.galleryTitle, L.galleryTitle)}</Script>}
               <div className="grid w-full grid-cols-2 gap-3">
                 {(data.gallery.length ? data.gallery : [null, null, null, null]).map((g, i) => (
@@ -330,10 +347,10 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 10 rsvp */}
           {b.rsvp && (
-            <Section id="rsvp" bg={bg("rsvp")} decor="corners" seed={10} veil={0.66} className="flex flex-col items-center gap-6 px-7 py-16">
+            <Section id="rsvp" bg={bg("rsvp")} decor="corners" seed={10} veil={0.66} className="flex flex-col items-center gap-4 px-7 py-6">
               <div className="text-center">
-                {lb(T.rsvpTitle, L.rsvpTitle) && <Script className="text-[34px]">{lb(T.rsvpTitle, L.rsvpTitle)}</Script>}
-                {c.rsvp.deadline && <p className="m-0 mt-2.5 text-[14px] leading-[1.5] text-[#5A5F48]">{c.rsvp.deadline}</p>}
+                {lb(T.rsvpTitle, L.rsvpTitle) && <Script className="text-[30px]">{lb(T.rsvpTitle, L.rsvpTitle)}</Script>}
+                {c.rsvp.deadline && <p className="m-0 mt-2 text-[13px] leading-[1.45] text-[#5A5F48]">{c.rsvp.deadline}</p>}
               </div>
               <RsvpForm
                 invitationId={data.id}
@@ -353,7 +370,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 11 contacts */}
           {b.contacts && c.contacts.length > 0 && (
-            <Section id="contacts" bg={bg("contacts")} decor="plain" seed={11} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
+            <Section id="contacts" bg={bg("contacts")} decor="plain" seed={11} className="flex flex-col items-center gap-6 px-8 py-10 text-center">
               {lb(T.contactsTitle, L.contactsTitle) && <Script>{lb(T.contactsTitle, L.contactsTitle)}</Script>}
               <div className="flex w-full flex-col gap-4">
                 {c.contacts.map((k, i) => (
@@ -380,7 +397,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 12 closing */}
           {b.closing && (
-            <Section id="closing" bg={bg("closing")} decor="cypress" seed={12} veil={0.42} className="flex min-h-[560px] flex-col items-center justify-center gap-4 px-8 py-20 text-center">
+            <Section id="closing" bg={bg("closing")} decor="cypress" seed={12} veil={0.42} className="flex flex-col items-center gap-4 px-8 py-10 text-center">
               <Script className="text-[38px] [text-wrap:balance]">{c.closing.text}</Script>
               <div className="mt-1 h-px w-14 bg-[#C0A268]" />
               {c.closing.signature.trim() ? (
