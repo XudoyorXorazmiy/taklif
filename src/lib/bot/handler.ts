@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import { defaultContent } from "@/lib/content";
 import { prisma } from "@/lib/db";
 import { RESERVED_SLUGS, invitationUrl, slugify } from "@/lib/site";
+import { ADMIN_TELEGRAM } from "@/lib/site-content";
 import { answerCallback, downloadFile, getFilePath, notifyAdmin, sendMessage } from "@/lib/telegram";
 import { getTemplateMeta, templates } from "@/templates/registry";
 import { DONE_DATA, SKIP_DATA, type BotData, optionalButtons, stepByKey, steps } from "./flow";
@@ -134,8 +135,8 @@ async function finish(chatId: number, d: BotData) {
     chatId,
     "<b>Rahmat, ma'lumotlar qabul qilindi.</b>\n\n" +
       `Shablon: ${tpl}\nHavola: ${invitationUrl(inv.slug)}\n\n` +
-      "Taklifnomangiz tayyorlanmoqda. Tasdiqlangach havola sizga yuboriladi va <b>24 soat</b> ochiq turadi — ko'rib chiqing.\n\n" +
-      "To'lovdan keyin havola to'ygacha ishlaydi. To'lov tafsilotlarini operator yuboradi.\n\n" +
+      "Taklifnomangiz tayyorlanmoqda. Tasdiqlangach havola sizga yuboriladi va <b>2 soat</b> ochiq turadi — ko'rib chiqing.\n\n" +
+      `To'lovdan keyin havola to'ygacha ishlaydi. To'lov uchun: ${ADMIN_TELEGRAM}\n\n` +
       "Qaytadan boshlash uchun /start",
   );
 

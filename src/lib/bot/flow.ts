@@ -1,3 +1,4 @@
+import type { InlineButton } from "@/lib/telegram";
 import { templates } from "@/templates/registry";
 
 /** Botda to'planadigan javoblar */
@@ -25,7 +26,7 @@ export interface Step {
   /** Savol matni */
   ask: (d: BotData) => string;
   /** Tanlov qadamlari uchun tugmalar */
-  choices?: () => { text: string; data: string }[][];
+  choices?: () => InlineButton[][];
   /** Bo'sh qoldirish mumkinmi */
   optional?: boolean;
   /** Matnni tekshirish; xato bo'lsa xabar qaytaradi */
@@ -48,9 +49,13 @@ export const steps: Step[] = [
     key: "templateId",
     kind: "choice",
     ask: () =>
-      "<b>Shablonni tanlang</b>\n\nHar birini telefonda ochib ko'rishingiz mumkin:\n" +
-      templates.map((t) => `• <a href="https://taklif.site/t/${t.id}">${t.name}</a>`).join("\n"),
-    choices: () => templates.map((t) => [{ text: t.name, data: `tpl:${t.id}` }]),
+      "<b>Shablonni tanlang</b>\n\nChapdagi tugma shablonni shu yerning o'zida ochadi, " +
+      "o'ngdagisi uni tanlaydi.",
+    choices: () =>
+      templates.map((t) => [
+        { text: t.name, webApp: `https://taklif.site/t/${t.id}?intro=0` },
+        { text: "Tanlash", data: `tpl:${t.id}` },
+      ]),
   },
   {
     key: "groom",
@@ -156,8 +161,8 @@ export const stepIndex = (key: string) => steps.findIndex((s) => s.key === key);
 export const stepByKey = (key: string) => steps.find((s) => s.key === key);
 
 /** Ixtiyoriy qadam uchun tugmalar */
-export function optionalButtons(step: Step) {
-  const rows: { text: string; data: string }[][] = [];
+export function optionalButtons(step: Step): InlineButton[][] | undefined {
+  const rows: InlineButton[][] = [];
   if (step.multi) rows.push([{ text: "Tayyor", data: DONE_DATA }]);
   if (step.optional) rows.push([{ text: SKIP, data: SKIP_DATA }]);
   return rows.length ? rows : undefined;

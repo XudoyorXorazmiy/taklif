@@ -2,7 +2,7 @@ import "server-only";
 import type { Invitation } from "./generated/prisma/client";
 
 /** Sinov muddati: admin tasdiqlagandan keyin havola shuncha vaqt ochiq turadi */
-export const TRIAL_HOURS = 24;
+export const TRIAL_HOURS = 2;
 /** To'langandan keyin: to'ydan keyin yana shuncha kun ochiq turadi */
 export const PAID_DAYS_AFTER_EVENT = 90;
 
@@ -13,7 +13,7 @@ export function paidExpiry(eventAt: Date): Date {
   return new Date(eventAt.getTime() + PAID_DAYS_AFTER_EVENT * 24 * 3600 * 1000);
 }
 
-/** Tasdiqlanganda muddat: hozirdan 24 soat */
+/** Tasdiqlanganda muddat: hozirdan 2 soat */
 export function trialExpiry(from: Date = new Date()): Date {
   return new Date(from.getTime() + TRIAL_HOURS * 3600 * 1000);
 }

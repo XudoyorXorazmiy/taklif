@@ -6,6 +6,7 @@ import { requireAdmin, loginAdmin, logoutAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { paidExpiry, trialExpiry } from "@/lib/lifecycle";
 import { invitationUrl } from "@/lib/site";
+import { ADMIN_TELEGRAM } from "@/lib/site-content";
 import { sendMessage } from "@/lib/telegram";
 import { invitationInput, templateInput } from "@/lib/validators";
 import { getTemplateMeta } from "@/templates/registry";
@@ -73,7 +74,7 @@ export async function setStatus(id: string, status: "DRAFT" | "PENDING" | "PUBLI
 }
 
 /**
- * Admin tasdiqlaydi: havola ochiladi va 24 soat ishlaydi.
+ * Admin tasdiqlaydi: havola ochiladi va 2 soat ishlaydi.
  * To'langandan keyin muddat to'y kuni + 90 kunga uzayadi (markPaid).
  */
 export async function approveInvitation(id: string) {
@@ -95,8 +96,8 @@ export async function approveInvitation(id: string) {
         `${invitationUrl(inv.slug)}\n\n` +
         (inv.paid
           ? "Havola to'ygacha ochiq turadi."
-          : "Havola <b>24 soat</b> ochiq. Ko'rib chiqing, o'zgartirish kerak bo'lsa yozing.\n" +
-            "To'lovdan keyin havola to'ygacha ishlaydi."),
+          : "Havola <b>2 soat</b> ochiq — ko'rib chiqing, o'zgartirish kerak bo'lsa yozing.\n\n" +
+            `Taklifnomani to'ygacha faollashtirish uchun to'lovni amalga oshiring: ${ADMIN_TELEGRAM}`),
     );
   }
   revalidatePath("/admin");

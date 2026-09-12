@@ -1,6 +1,8 @@
 /** Sayt matnlari (dizayndan). Keyinchalik admin'ga o'tkazish mumkin. */
 
-export const TELEGRAM_URL = process.env.NEXT_PUBLIC_TELEGRAM_URL ?? "https://t.me/taklif_site";
+export const TELEGRAM_URL = process.env.NEXT_PUBLIC_TELEGRAM_URL ?? "https://t.me/taklifsitebot";
+/** Operator: to'lov va savollar uchun */
+export const ADMIN_TELEGRAM = process.env.NEXT_PUBLIC_ADMIN_TELEGRAM ?? "https://t.me/xudoyor_uz";
 export const INSTAGRAM_URL = process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://instagram.com/taklif.site";
 export const PHONE = process.env.NEXT_PUBLIC_PHONE ?? "+998 90 000 00 00";
 

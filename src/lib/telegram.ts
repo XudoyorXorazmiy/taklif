@@ -7,7 +7,18 @@ export const botConfigured = () => TOKEN.length > 0;
 
 export interface InlineButton {
   text: string;
-  data: string;
+  /** Bosilganda botga qaytadigan kalit */
+  data?: string;
+  /** Telegram ichida ochiladigan sahifa (Mini App) - botdan chiqmaydi */
+  webApp?: string;
+  /** Tashqi havola */
+  url?: string;
+}
+
+function toTgButton(b: InlineButton) {
+  if (b.webApp) return { text: b.text, web_app: { url: b.webApp } };
+  if (b.url) return { text: b.text, url: b.url };
+  return { text: b.text, callback_data: b.data ?? "noop" };
 }
 
 async function call<T = unknown>(method: string, body: unknown): Promise<T | null> {
@@ -35,7 +46,7 @@ export function sendMessage(chatId: bigint | number | string, text: string, butt
     parse_mode: "HTML",
     link_preview_options: { is_disabled: true },
     ...(buttons?.length
-      ? { reply_markup: { inline_keyboard: buttons.map((row) => row.map((b) => ({ text: b.text, callback_data: b.data }))) } }
+      ? { reply_markup: { inline_keyboard: buttons.map((row) => row.map(toTgButton)) } }
       : {}),
   });
 }
