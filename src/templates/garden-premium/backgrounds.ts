@@ -17,18 +17,21 @@ const P = {
 } as const;
 
 export const DEFAULT_BG = {
-  cover: P.chandelier,
-  greeting: P.softCorner,
-  date: P.goldRing,
-  countdown: P.cypressPath,
-  venue: P.gardenSteps,
-  schedule: P.ivyArch,
-  details: P.floralColumns,
-  dressCode: P.colonnade,
-  gallery: P.ivyArch,
-  rsvp: P.softCorner,
+  // PDF maketdagi tartib: har bir sahna o'z blokiga
+  cover: P.chandelier,        // ismlar, katta ochilish
+  greeting: P.gardenSteps,    // salomlashuv va sana
+  countdown: P.goldRing,      // oltin doira ramka - sanoq
+  venue: P.ivyArch,           // manzil
+  schedule: P.colonnade,      // kun dasturi
+  dressCode: P.floralColumns, // kiyim tarzi
+  rsvp: P.softCorner,         // anketa - eng ochiq fon
+  closing: P.cypressPath,     // yakun
+
+  // Maketda yo'q, bizda bor bloklar: qo'shni bloklar bilan takrorlanmasin
+  date: P.colonnade,
+  details: P.softCorner,
+  gallery: P.gardenSteps,
   contacts: P.floralColumns,
-  closing: P.cypressPath,
 } as const;
 
 export type BgKey = keyof typeof DEFAULT_BG;
