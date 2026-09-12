@@ -103,9 +103,18 @@ function Bg({ bg, decor, seed, veil = 0.55 }: { bg?: PanelBg; decor: DecorKind; 
       ) : (
         <Decor kind={decor} seed={seed} />
       )}
+      {/* umumiy yengil parda - chetlarda naqsh ko'rinib tursin */}
       <div
         className="absolute inset-0"
-        style={{ background: `linear-gradient(180deg, rgba(247,243,237,${veil + 0.1}) 0%, rgba(247,243,237,${veil - 0.15}) 40%, rgba(247,243,237,${veil + 0.1}) 100%)` }}
+        style={{ background: `linear-gradient(180deg, rgba(247,243,237,${veil * 0.9}) 0%, rgba(247,243,237,${veil * 0.72}) 50%, rgba(247,243,237,${veil * 0.9}) 100%)` }}
+      />
+      {/* matn ortidagi yumshoq yorug'lik: yozuv doim oqroq fonda tursin */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(76% 38% at 50% 50%, rgba(250,247,241,.92) 0%, rgba(250,247,241,.78) 45%, rgba(250,247,241,.38) 75%, rgba(250,247,241,0) 100%)",
+        }}
       />
     </>
   );
