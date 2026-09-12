@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { requireAdmin, loginAdmin, logoutAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { paidExpiry, trialExpiry } from "@/lib/lifecycle";
+import { invitationUrl } from "@/lib/site";
+import { sendMessage } from "@/lib/telegram";
 import { invitationInput, templateInput } from "@/lib/validators";
 import { getTemplateMeta } from "@/templates/registry";
 
@@ -86,6 +88,17 @@ export async function approveInvitation(id: string) {
       expiresAt: cur.paid ? paidExpiry(cur.eventAt) : trialExpiry(),
     },
   });
+  if (inv.tgChatId) {
+    await sendMessage(
+      inv.tgChatId,
+      "<b>Taklifnomangiz tayyor!</b>\n\n" +
+        `${invitationUrl(inv.slug)}\n\n` +
+        (inv.paid
+          ? "Havola to'ygacha ochiq turadi."
+          : "Havola <b>24 soat</b> ochiq. Ko'rib chiqing, o'zgartirish kerak bo'lsa yozing.\n" +
+            "To'lovdan keyin havola to'ygacha ishlaydi."),
+    );
+  }
   revalidatePath("/admin");
   revalidatePath(`/s/${inv.slug}`);
 }
@@ -103,6 +116,14 @@ export async function markPaid(id: string, paid: boolean) {
       expiresAt: paid ? paidExpiry(cur.eventAt) : cur.status === "PUBLISHED" ? trialExpiry() : cur.expiresAt,
     },
   });
+  if (paid && inv.tgChatId) {
+    await sendMessage(
+      inv.tgChatId,
+      "<b>To'lov qabul qilindi. Rahmat!</b>\n\n" +
+        `Taklifnomangiz to'ygacha ochiq turadi:\n${invitationUrl(inv.slug)}\n\n` +
+        "Mehmonlarga shu havolani yuboring.",
+    );
+  }
   revalidatePath("/admin");
   revalidatePath(`/s/${inv.slug}`);
 }

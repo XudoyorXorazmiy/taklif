@@ -135,3 +135,24 @@ model Template {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ─── Telegram bot suhbati ─────────────────────────────────────────────────
+
+model BotSession {
+  /// Telegram chat id - bitta mijoz bitta suhbat
+  chatId       BigInt  @id
+  username     String?
+  /// Ism (Telegram profilidan) - adminga ko'rsatish uchun
+  fullName     String?
+  /// Hozirgi qadam kaliti (src/lib/bot/flow.ts)
+  step         String  @default("start")
+  /// To'plangan javoblar
+  data         Json    @default("{}")
+  /// Tugagandan keyin yaratilgan taklifnoma
+  invitationId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([updatedAt])
+}

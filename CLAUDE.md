@@ -35,6 +35,13 @@ Next.js 16 (App Router, `proxy.ts`), TypeScript, Tailwind v4, Prisma 7 + `@prism
 ## Admin
 Bitta parol (`ADMIN_PASSWORD`), HMAC cookie (`src/lib/auth-edge.ts`). Sahifalar: `/admin` ro'yxat, `/admin/new`, `/admin/[id]`, `/admin/[id]/rsvps`. Server action'lar `src/app/admin/actions.ts`.
 
+## Telegram bot
+- Mijoz botda savollarga javob beradi -> taklifnoma `PENDING` holatida yaratiladi -> admin tasdiqlaydi -> havola 24 soat ochiq -> to'lov belgilangach to'ygacha.
+- `src/lib/bot/flow.ts` - savollar ro'yxati (qadam qo'shish shu yerda), `src/lib/bot/handler.ts` - suhbat mantiqi va taklifnoma yasash, `src/lib/telegram.ts` - API, `src/app/api/telegram/route.ts` - webhook.
+- Suhbat holati `BotSession` jadvalida (serverless bo'lgani uchun xotirada emas).
+- Muddatlar `src/lib/lifecycle.ts`: sinov 24 soat, to'langanda to'y + 90 kun.
+- Env: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET`, `TELEGRAM_ADMIN_CHAT_ID`. Webhook: `node scripts/set-webhook.mjs`.
+
 ## Buyruqlar
 `npm run dev` · `npm run db:push` · `npm run db:seed` · `npm run typecheck` · `npm run build`
 Vaqt: admin Toshkent (UTC+5) vaqtida kiritadi, bazada UTC.
