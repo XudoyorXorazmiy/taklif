@@ -10,6 +10,7 @@ import { ROOT_DOMAIN } from "@/lib/site";
 import { fontVars } from "../fonts";
 import { Arch, Cypresses, FloralCorner, TopGarland, Wash } from "./Decor";
 import type { TemplateProps } from "../types";
+import { DEFAULT_BG, type BgKey } from "./backgrounds";
 
 /**
  * 04 · GARDEN-PREMIUM — "Bog' saroyi" (premium)
@@ -137,7 +138,8 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
   const L = t(locale);
   const b = c.blocks;
   const T = c.labels;
-  const bgs = c.backgrounds;
+  /** Blok foni: admin yuklagan rasm, bo'lmasa shablonning standart akvarel sahnasi */
+  const bg = (k: BgKey) => c.backgrounds[k]?.trim() || DEFAULT_BG[k];
   const lb = (v: string, d: string) => (v.trim() === "-" ? null : v.trim() || d);
   const initials =
     c.hero.initials.trim() || (data.groomName || data.brideName ? `${data.groomName[0] ?? ""} & ${data.brideName[0] ?? ""}` : "♥");
@@ -155,7 +157,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
         <div className={`${fontVars} relative min-h-dvh bg-[#EFEAE4] font-mr text-[#2C4130]`}>
           {/* 01 cover */}
           <section id="cover" className="relative isolate flex h-[844px] flex-col items-center justify-end overflow-hidden px-8 pb-24 text-center">
-            <Bg src={bgs.cover} decor="arch" seed={1} veil={0.24} />
+            <Bg src={bg("cover")} decor="arch" seed={1} veil={0.24} />
             <div className="relative z-[2] flex flex-col items-center">
               {c.hero.eyebrow && <div className="mb-5 text-[11px] font-medium uppercase tracking-[.34em] text-[#5A5F48]">{c.hero.eyebrow}</div>}
               {c.hero.title ? (
@@ -173,7 +175,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 02 greeting */}
           {b.greeting && (
-            <Section id="greeting" bg={bgs.greeting} decor="garland" seed={2} className="flex flex-col items-center gap-4 px-8 py-16 text-center">
+            <Section id="greeting" bg={bg("greeting")} decor="garland" seed={2} className="flex flex-col items-center gap-4 px-8 py-16 text-center">
               {guest && <div className="font-cg text-[24px] font-medium italic text-[#5A5F48]">{L.dear} {guest},</div>}
               <Script className="text-[40px]">{formatDate(data.eventAt, locale)}</Script>
               <div className="mt-1 h-px w-14 bg-[#C0A268]" />
@@ -184,7 +186,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 03 date — kalendar */}
           {b.date && (
-            <Section id="date" bg={bgs.date} decor="corners" seed={3} className="flex flex-col items-center gap-6 px-8 py-16">
+            <Section id="date" bg={bg("date")} decor="corners" seed={3} className="flex flex-col items-center gap-6 px-8 py-16">
               {lb(T.dateTitle, L.dateTitle) && <Script>{lb(T.dateTitle, L.dateTitle)}</Script>}
               <div className="text-center">
                 <div className="font-cg text-[34px] font-medium leading-[1.1]">{formatDate(data.eventAt, locale)}</div>
@@ -209,7 +211,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 04 countdown — oltin doira */}
           {b.countdown && (
-            <Section id="countdown" bg={bgs.countdown} decor="cypress" seed={4} veil={0.5} className="flex flex-col items-center px-6 py-16">
+            <Section id="countdown" bg={bg("countdown")} decor="cypress" seed={4} veil={0.5} className="flex flex-col items-center px-6 py-16">
               <div className="relative grid aspect-square w-full max-w-[330px] place-items-center">
                 <div className="absolute inset-0 rounded-full border border-[#C0A268]" />
                 <div className="absolute inset-[10px] rounded-full border border-[#C0A268]/35" />
@@ -232,7 +234,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 05 venue */}
           {b.venues && venues.length > 0 && (
-            <Section id="venue" bg={bgs.venue} decor="arch" seed={5} veil={0.62} className="flex flex-col items-center gap-7 px-8 py-16 text-center">
+            <Section id="venue" bg={bg("venue")} decor="arch" seed={5} veil={0.62} className="flex flex-col items-center gap-7 px-8 py-16 text-center">
               {lb(T.venueTitle, L.venueTitle) && <Script>{lb(T.venueTitle, L.venueTitle)}</Script>}
               {venues.map((v, i) => (
                 <div key={i} className="flex w-full flex-col items-center gap-2.5">
@@ -258,7 +260,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 06 schedule */}
           {b.schedule && c.schedule.length > 0 && (
-            <Section id="schedule" bg={bgs.schedule} decor="garland" seed={6} veil={0.6} className="flex flex-col items-center gap-6 px-8 py-16">
+            <Section id="schedule" bg={bg("schedule")} decor="garland" seed={6} veil={0.6} className="flex flex-col items-center gap-6 px-8 py-16">
               <div className="text-center">
                 {lb(T.scheduleTitle, L.scheduleTitle) && <Script>{lb(T.scheduleTitle, L.scheduleTitle)}</Script>}
                 <div className="mt-2 text-[15px] text-[#5A5F48]">{formatDate(data.eventAt, locale)}</div>
@@ -280,7 +282,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 07 details */}
           {b.details && c.details.length > 0 && (
-            <Section id="details" bg={bgs.details} decor="corners" seed={7} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
+            <Section id="details" bg={bg("details")} decor="corners" seed={7} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
               {lb(T.detailsTitle, L.detailsTitle) && <Script>{lb(T.detailsTitle, L.detailsTitle)}</Script>}
               {c.details.map((d, i) => (
                 <div key={i} className="w-full max-w-[320px]">
@@ -293,7 +295,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 08 dresscode */}
           {b.dressCode && (c.dressCode.text || c.dressCode.colors.length > 0) && (
-            <Section id="dresscode" bg={bgs.dressCode} decor="corners" seed={8} className="flex flex-col items-center gap-5 px-8 py-16 text-center">
+            <Section id="dresscode" bg={bg("dressCode")} decor="corners" seed={8} className="flex flex-col items-center gap-5 px-8 py-16 text-center">
               {lb(T.dressCodeTitle, L.dressCodeTitle) && <Script>{lb(T.dressCodeTitle, L.dressCodeTitle)}</Script>}
               {c.dressCode.text && <p className="m-0 whitespace-pre-line text-[15px] leading-[1.7] text-[#3F4A3C]">{c.dressCode.text}</p>}
               {c.dressCode.colors.length > 0 && (
@@ -308,7 +310,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 09 gallery */}
           {b.gallery && (data.gallery.length > 0 || slots) && (
-            <Section id="gallery" bg={bgs.gallery} decor="plain" seed={9} className="flex flex-col items-center gap-6 px-6 py-16">
+            <Section id="gallery" bg={bg("gallery")} decor="plain" seed={9} className="flex flex-col items-center gap-6 px-6 py-16">
               {lb(T.galleryTitle, L.galleryTitle) && <Script>{lb(T.galleryTitle, L.galleryTitle)}</Script>}
               <div className="grid w-full grid-cols-2 gap-3">
                 {(data.gallery.length ? data.gallery : [null, null, null, null]).map((g, i) => (
@@ -328,7 +330,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 10 rsvp */}
           {b.rsvp && (
-            <Section id="rsvp" bg={bgs.rsvp} decor="corners" seed={10} veil={0.66} className="flex flex-col items-center gap-6 px-7 py-16">
+            <Section id="rsvp" bg={bg("rsvp")} decor="corners" seed={10} veil={0.66} className="flex flex-col items-center gap-6 px-7 py-16">
               <div className="text-center">
                 {lb(T.rsvpTitle, L.rsvpTitle) && <Script className="text-[34px]">{lb(T.rsvpTitle, L.rsvpTitle)}</Script>}
                 {c.rsvp.deadline && <p className="m-0 mt-2.5 text-[14px] leading-[1.5] text-[#5A5F48]">{c.rsvp.deadline}</p>}
@@ -351,7 +353,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 11 contacts */}
           {b.contacts && c.contacts.length > 0 && (
-            <Section id="contacts" bg={bgs.contacts} decor="plain" seed={11} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
+            <Section id="contacts" bg={bg("contacts")} decor="plain" seed={11} className="flex flex-col items-center gap-6 px-8 py-16 text-center">
               {lb(T.contactsTitle, L.contactsTitle) && <Script>{lb(T.contactsTitle, L.contactsTitle)}</Script>}
               <div className="flex w-full flex-col gap-4">
                 {c.contacts.map((k, i) => (
@@ -378,7 +380,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
 
           {/* 12 closing */}
           {b.closing && (
-            <Section id="closing" bg={bgs.closing} decor="cypress" seed={12} veil={0.42} className="flex min-h-[560px] flex-col items-center justify-center gap-4 px-8 py-20 text-center">
+            <Section id="closing" bg={bg("closing")} decor="cypress" seed={12} veil={0.42} className="flex min-h-[560px] flex-col items-center justify-center gap-4 px-8 py-20 text-center">
               <Script className="text-[38px] [text-wrap:balance]">{c.closing.text}</Script>
               <div className="mt-1 h-px w-14 bg-[#C0A268]" />
               {c.closing.signature.trim() ? (
