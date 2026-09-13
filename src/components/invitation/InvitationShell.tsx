@@ -24,7 +24,7 @@ export function InvitationShell({ intro, showIntro = true, music, musicClassName
   const open = useCallback(() => {
     if (phase !== "closed") return;
     setPhase("opening");
-    window.setTimeout(() => setPhase("open"), 900);
+    window.setTimeout(() => setPhase("open"), 1450);
   }, [phase]);
 
   // Sahifa ochilgach #hash bo'lsa shu blokka o'tish (katalogdagi "Sana / Dastur / RSVP" tugmalari)

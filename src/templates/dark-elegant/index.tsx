@@ -2,6 +2,7 @@ import { Calendar } from "@/components/invitation/Calendar";
 import { Countdown } from "@/components/invitation/Countdown";
 import { Frame } from "@/components/invitation/Frame";
 import { InvitationShell } from "@/components/invitation/InvitationShell";
+import { LaceOval } from "@/components/invitation/LaceOval";
 import { Reveal } from "@/components/invitation/Reveal";
 import { RsvpForm, type RsvpUi } from "@/components/invitation/RsvpForm";
 import { Slot } from "@/components/invitation/Slot";
@@ -52,20 +53,8 @@ function H2({ children, light, className = "" }: { children: React.ReactNode; li
 
 function Oval({ initials, eyebrow, open, hint }: { initials: string; eyebrow: string; open: string; hint: string }) {
   return (
-    <div className={`${fontVars} relative flex h-full w-full flex-col items-center justify-center gap-9 overflow-hidden bg-[#2B1D16] font-mr`}>
-      <div className="pointer-events-none absolute inset-4 rounded-t-[180px] border border-[#C9A961]/35" />
-      <div className="intro-oval relative flex h-[380px] w-[280px] items-center justify-center rounded-[140px] border border-[#C9A961] p-3.5">
-        <Slot preview label="lace (to'r) naqsh, oval, 300×400" className="absolute -inset-2.5 !items-start rounded-[150px] !pt-7 text-[9px] text-[#C9A961]" style={{ borderColor: "rgba(201,169,97,.5)" }} />
-        <div className="flex h-full w-full flex-col items-center justify-center gap-[18px] rounded-[126px] border border-[#C9A961]/50 text-center">
-          <div className="text-[10px] font-medium uppercase tracking-[.3em] text-[#C9A961]">{eyebrow}</div>
-          <div className="font-ab text-[52px] leading-[1.1] text-[#F1E6D2]">{initials}</div>
-          <div className="mt-1.5 flex h-[46px] items-center justify-center rounded-[23px] border border-[#C9A961] px-8 text-[13px] font-semibold uppercase tracking-[.14em] text-[#C9A961]">{open}</div>
-        </div>
-      </div>
-      <div className="flex flex-col items-center gap-2.5">
-        <div className="text-[13px] font-medium tracking-[.08em] text-[#F1E6D2]/60">{hint}</div>
-        <div className="h-7 w-px bg-[#C9A961]" />
-      </div>
+    <div className={`${fontVars} relative h-full w-full font-mr`}>
+      <LaceOval initials={initials} eyebrow={eyebrow} open={open} hint={hint} />
     </div>
   );
 }

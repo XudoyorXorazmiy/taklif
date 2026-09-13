@@ -2,6 +2,7 @@ import { Calendar } from "@/components/invitation/Calendar";
 import { Countdown } from "@/components/invitation/Countdown";
 import { Frame } from "@/components/invitation/Frame";
 import { InvitationShell } from "@/components/invitation/InvitationShell";
+import { PaperEnvelope, type EnvelopeTheme } from "@/components/invitation/PaperEnvelope";
 import { Reveal } from "@/components/invitation/Reveal";
 import { RsvpForm, type RsvpUi } from "@/components/invitation/RsvpForm";
 import { Slot } from "@/components/invitation/Slot";
@@ -136,22 +137,27 @@ function Section({ id, bg, decor = "plain", seed = 0, veil, className = "", chil
   );
 }
 
-function Cover({ initials, hint, eyebrow }: { initials: string; hint: string; eyebrow: string }) {
+const envelopeTheme: EnvelopeTheme = {
+  outer: "#DAD9CB",
+  paper: "#C4CDB8",
+  side: "#CBD3BF",
+  bottom: "#C0CAB3",
+  top: "#D0D7C5",
+  emboss: "eucalyptus",
+  embossTone: "#CAD2BE",
+  seal: ["#E6CF95", "#C0A268", "#8C6F37"],
+  sealText: "#3B4A36",
+  sealFont: "var(--font-cormorant), serif",
+  sealItalic: true,
+  ink: "#3F4A3C",
+  ribbon: "#F2ECDF",
+  sprig: true,
+};
+
+function Cover({ initials, hint }: { initials: string; hint: string }) {
   return (
-    <div className={`${fontVars} relative flex h-full w-full flex-col items-center justify-center gap-9 overflow-hidden font-mr`} style={{ background: softBg }}>
-      <Wash seed={9} />
-      <TopGarland />
-      <FloralCorner position="br" className="bottom-0 right-0 !h-[34%] !w-[52%]" />
-      <div className="pointer-events-none absolute inset-5 z-[1] rounded-[200px_200px_24px_24px] border border-[#C0A268]/50" />
-      <div className="relative z-[2] text-[11px] font-medium uppercase tracking-[.34em] text-[#5A5F48]">{eyebrow}</div>
-      <div className="intro-oval relative z-[2] grid h-[186px] w-[186px] place-items-center rounded-full border border-[#C0A268] bg-[#F7F3EC]/70 backdrop-blur-[2px]">
-        <div className="absolute inset-2 rounded-full border border-[#C0A268]/40" />
-        <div className="font-cg text-[46px] font-medium italic text-[#2C4130]">{initials}</div>
-      </div>
-      <div className="relative z-[2] flex flex-col items-center gap-3">
-        <div className="text-[13px] font-medium tracking-[.1em] text-[#5A5F48]">{hint}</div>
-        <div className="h-8 w-px bg-[#C0A268]" />
-      </div>
+    <div className={`${fontVars} relative h-full w-full`}>
+      <PaperEnvelope theme={envelopeTheme} initials={initials} hint={hint} id="gp-env" />
     </div>
   );
 }
@@ -177,7 +183,7 @@ export default function GardenPremium({ data, guest, preview, slots }: TemplateP
       showIntro={c.hero.intro}
       music={data.music}
       musicClassName="fixed bottom-9 right-7 z-50 grid h-12 w-12 place-items-center rounded-full border border-[#C0A268]/60 bg-[#F3EFE8]/90 text-[#2C4130] shadow-[0_6px_18px_rgba(43,58,46,.18)] backdrop-blur"
-      intro={<Cover initials={initials} hint={L.tapToOpen} eyebrow={L.introEyebrow} />}
+      intro={<Cover initials={initials} hint={L.tapToOpen} />}
     >
       <Frame color="#E4DFD5">
         <div className={`${fontVars} @container relative min-h-dvh bg-[#EFEAE4] font-mr text-[#2C4130]`}>

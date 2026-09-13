@@ -97,7 +97,7 @@ export function PhoneCover({ item, groom = "Nodirbek", bride = "Malika", date = 
       <div className="mt-6 leading-[1.1]" style={{ fontFamily: g.family, fontSize: g.size, fontWeight: g.weight, letterSpacing: g.tracking }}>{groom}</div>
       <div className="my-1 font-cg text-[30px] italic leading-none" style={{ color: g.accent }}>&amp;</div>
       <div className="leading-[1.1]" style={{ fontFamily: g.family, fontSize: g.size, fontWeight: g.weight, letterSpacing: g.tracking }}>{bride}</div>
-      <div className="mt-7 h-[210px] w-[170px] border" style={{ borderColor: g.accent, borderRadius: g.photoRadius, background: g.photo }} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}<img src={DEMO_PHOTOS.cover} alt="" className="mt-7 h-[210px] w-[170px] border object-cover" style={{ borderColor: g.accent, borderRadius: g.photoRadius }} />
       <div className="mt-6 font-cg text-base font-medium tracking-[.16em]">{date}</div>
     </div>
   );

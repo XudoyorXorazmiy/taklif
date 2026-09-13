@@ -2,10 +2,11 @@ import { Calendar } from "@/components/invitation/Calendar";
 import { Countdown } from "@/components/invitation/Countdown";
 import { Frame } from "@/components/invitation/Frame";
 import { InvitationShell } from "@/components/invitation/InvitationShell";
+import { PaperEnvelope, type EnvelopeTheme } from "@/components/invitation/PaperEnvelope";
 import { Reveal } from "@/components/invitation/Reveal";
 import { RsvpForm, type RsvpUi } from "@/components/invitation/RsvpForm";
 import { Slot } from "@/components/invitation/Slot";
-import { formatDate, formatDateDots, formatDateNumeric, formatTime, formatWeekday, t } from "@/lib/i18n";
+import { formatDate, formatDateDots, formatTime, formatWeekday, t } from "@/lib/i18n";
 import { ROOT_DOMAIN } from "@/lib/site";
 import { fontVars } from "../fonts";
 import type { TemplateProps } from "../types";
@@ -43,22 +44,24 @@ function Script({ children, className = "" }: { children: React.ReactNode; class
   return <div className={`font-gv text-[40px] leading-none text-[#7A8C6E] ${className}`}>{children}</div>;
 }
 
-function Card({ initials, eyebrow, hint, date }: { initials: string; eyebrow: string; hint: string; date: string }) {
+const envelopeTheme: EnvelopeTheme = {
+  outer: "#E7EBDF",
+  paper: "#F1F0E8",
+  side: "#F5F4EE",
+  bottom: "#EEEDE4",
+  top: "#F7F6F1",
+  emboss: "eucalyptus",
+  embossTone: "#F4F3EC",
+  seal: ["#A9BA9B", "#7A8C6E", "#52644A"],
+  sealText: "#F6F3E8",
+  sealFont: "var(--font-vibes), cursive",
+  ink: "#7A8C6E",
+};
+
+function Card({ initials, hint }: { initials: string; hint: string }) {
   return (
-    <div className={`${fontVars} relative flex h-full w-full flex-col items-center justify-center gap-9 overflow-hidden bg-white font-mr`}>
-      <Slot preview label="Akvarel oq atirgul + evkalipt, chap yuqori, 220×280" className="intro-decor intro-decor-l absolute -left-[30px] -top-[30px] h-[280px] w-[220px] rounded-br-[140px] text-[#7A8C6E]" style={ph} />
-      <Slot preview label="Akvarel gul dastasi, o'ng past, 240×300" className="intro-decor intro-decor-r absolute -bottom-[30px] -right-[30px] h-[300px] w-[240px] rounded-tl-[150px] text-[#7A8C6E]" style={ph} />
-      <div className="intro-card relative flex h-[340px] w-[260px] flex-col items-center justify-center gap-3.5 border border-[#DDE2D3] bg-[#FFFDF9] shadow-[0_16px_40px_rgba(90,100,70,.14)]">
-        <div className="pointer-events-none absolute inset-2.5 border border-[#E7E2D2]" />
-        <div className="text-[10px] font-medium uppercase tracking-[.3em] text-[#7A8C6E]">{eyebrow}</div>
-        <div className="font-gv text-[44px] leading-[1.1] text-[#3B3A36]">{initials}</div>
-        <div className="h-px w-9 bg-[#C2A36B]" />
-        <div className="font-cg text-sm font-medium tracking-[.16em] text-[#3B3A36]">{date}</div>
-      </div>
-      <div className="flex flex-col items-center gap-2.5">
-        <div className="text-[13px] font-medium tracking-[.08em] text-[#7A8C6E]">{hint}</div>
-        <div className="h-7 w-px bg-[#C2A36B]" />
-      </div>
+    <div className={`${fontVars} relative h-full w-full`}>
+      <PaperEnvelope theme={envelopeTheme} initials={initials} hint={hint} id="fw-env" />
     </div>
   );
 }
@@ -77,7 +80,7 @@ export default function FloralWatercolor({ data, guest, preview, slots }: Templa
       showIntro={c.hero.intro}
       music={data.music}
       musicClassName="fixed bottom-9 right-8 z-50 grid h-11 w-11 place-items-center rounded-full bg-[#7A8C6E] text-white shadow-[0_4px_12px_rgba(90,100,70,.25)]"
-      intro={<Card initials={initials} eyebrow={L.introEyebrow} hint={L.tapToOpen} date={formatDateNumeric(data.eventAt)} />}
+      intro={<Card initials={initials} hint={L.tapToOpen} />}
     >
       <Frame color="#EEF0E6">
         <div className={`${fontVars} relative min-h-dvh bg-white font-mr text-[#3B3A36]`}>

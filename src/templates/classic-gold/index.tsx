@@ -2,6 +2,7 @@ import { Calendar } from "@/components/invitation/Calendar";
 import { Countdown } from "@/components/invitation/Countdown";
 import { Frame } from "@/components/invitation/Frame";
 import { InvitationShell } from "@/components/invitation/InvitationShell";
+import { PaperEnvelope, type EnvelopeTheme } from "@/components/invitation/PaperEnvelope";
 import { Reveal } from "@/components/invitation/Reveal";
 import { RsvpForm, type RsvpUi } from "@/components/invitation/RsvpForm";
 import { Slot } from "@/components/invitation/Slot";
@@ -58,28 +59,24 @@ function H2({ children, className = "" }: { children: React.ReactNode; className
   return <h2 className={`m-0 font-cg text-[30px] font-medium leading-[1.15] text-[#1E1A16] ${className}`}>{children}</h2>;
 }
 
-function Envelope({ initials, eyebrow, hint }: { initials: string; eyebrow: string; hint: string }) {
+const envelopeTheme: EnvelopeTheme = {
+  outer: "#E6DCC7",
+  paper: "#EDE5D3",
+  side: "#F2EBDC",
+  bottom: "#EAE1CE",
+  top: "#F4EEE1",
+  emboss: "vines",
+  embossTone: "#F3ECDD",
+  seal: ["#A63C4A", "#7A1F2B", "#4A0E17"],
+  sealText: "#E2BE73",
+  sealFont: "var(--font-pinyon), cursive",
+  ink: "#8A7A5A",
+};
+
+function Envelope({ initials, hint }: { initials: string; hint: string }) {
   return (
-    <div className={`${fontVars} relative flex h-full w-full flex-col items-center justify-center gap-10 bg-[#FBF8F1] font-mr`}>
-      <div className="pointer-events-none absolute inset-4 border border-[#C9AD5F]" />
-      <div className="pointer-events-none absolute inset-[22px] border border-[#C9AD5F]/45" />
-      <div className="text-[11px] font-medium uppercase tracking-[.3em] text-[#B8973F]">{eyebrow}</div>
-      <div className="relative h-[210px] w-[300px]" style={{ perspective: "900px" }}>
-        <div className="absolute inset-0 border border-[#C9AD5F] bg-[#F3EBDA] shadow-[0_12px_30px_rgba(120,95,40,.15)]" />
-        <div className="absolute bottom-0 left-0 h-[210px] w-[150px] bg-[#F7F0E1] opacity-90" style={{ clipPath: "polygon(0 0,100% 100%,0 100%)" }} />
-        <div className="absolute bottom-0 right-0 h-[210px] w-[150px] bg-[#F7F0E1] opacity-90" style={{ clipPath: "polygon(100% 0,100% 100%,0 100%)" }} />
-        <div className="envelope-flap absolute left-0 right-0 top-0 h-[120px] border-b border-[#C9AD5F] bg-[#EDE3CE]" style={{ clipPath: "polygon(0 0,100% 0,50% 100%)" }} />
-        <div
-          className="wax-seal absolute left-1/2 top-[120px] flex h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full font-cg text-[22px] font-semibold tracking-[.04em] text-[#FBF8F1] shadow-[0_4px_10px_rgba(90,70,20,.3)]"
-          style={{ background: "radial-gradient(circle at 35% 30%,#D9BD6E,#B8973F 60%,#8F7230)" }}
-        >
-          {initials}
-        </div>
-      </div>
-      <div className="flex flex-col items-center gap-2.5">
-        <div className="text-[13px] font-medium tracking-[.08em] text-[#8A7A5A]">{hint}</div>
-        <div className="h-7 w-px bg-[#C9AD5F]" />
-      </div>
+    <div className={`${fontVars} relative h-full w-full`}>
+      <PaperEnvelope theme={envelopeTheme} initials={initials} hint={hint} id="cg-env" />
     </div>
   );
 }
@@ -98,7 +95,7 @@ export default function ClassicGold({ data, guest, preview, slots }: TemplatePro
       showIntro={c.hero.intro}
       music={data.music}
       musicClassName="fixed bottom-9 right-8 z-50 grid h-11 w-11 place-items-center rounded-full bg-[#B8973F] text-[#FBF8F1] shadow-[0_4px_12px_rgba(120,95,40,.25)]"
-      intro={<Envelope initials={initials} eyebrow={L.introEyebrow} hint={L.tapToOpen} />}
+      intro={<Envelope initials={initials} hint={L.tapToOpen} />}
     >
       <Frame color="#EFE7D6">
         <div className={`${fontVars} relative min-h-dvh bg-[#FBF8F1] font-mr text-[#1E1A16]`}>
